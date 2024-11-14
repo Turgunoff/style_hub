@@ -1,16 +1,32 @@
-# style_hub
+lib  
+├── data  
+│ ├── datasources  
+│ │ ├── remote  
+│ │ │ └── api_service.dart  
+│ │ └── local  
+│ │ └── database.dart  
+│ ├── repositories  
+│ │ └── user_repository_impl.dart  
+│ └── models  
+│ └── user.dart  
+├── domain  
+│ ├── repositories  
+│ │ └── user_repository.dart  
+│ ├── usecases  
+│ │ └── get_user.dart  
+│ └── entities  
+│ └── user.dart  
+├── presentation  
+│ ├── screens  
+│ │ ├── home  
+│ │ │ ├── home_screen.dart  
+│ │ │ └── home_view_model.dart  
+│ │ ├── splash  
+│ │ │ └── splash_screen.dart  
+│ │ └── bottom_nav_bar.dart  
+│ ├── widgets  
+│ │ └── custom_button.dart  
+│ └── utils  
+│ └── app_colors.dart  
+└── main.dart  
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
