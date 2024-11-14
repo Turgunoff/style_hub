@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-import 'home_screen/home_screen.dart';
-import 'inbox_screen.dart';
-import 'my_booking_screen.dart';
-import 'profile_screen.dart';
+import '../home/home_screen.dart';
+import '../inbox/inbox_screen.dart';
+import '../my_booking/my_booking_screen.dart';
+import '../profile/profile_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
