@@ -1,0 +1,126 @@
+lib/
+├── core/
+│   ├── constants/
+│   │   ├── app_colors.dart        # Ilova ranglari
+│   │   ├── app_styles.dart        # Umumiy stillar (TextStyle, BoxStyle, etc.)
+│   │   ├── app_strings.dart       # Statik matnlar (qolgan tillarga tarjima qilinmaydigan)
+│   │   ├── api_endpoints.dart    # API manzillari (URL lar)
+│   │   └── app_constants.dart    # Boshqa konstantalar (masalan, animatsiya davomiyligi)
+│   ├── utils/
+│   │   ├── extensions/           # Extension metodlar
+│   │   │   └── string_extensions.dart # String uchun extensionlar
+│   │   ├── helpers/              # Yordamchi funksiyalar
+│   │   │   └── format_helper.dart  # Masalan, vaqt, narx formatlash
+│   │   └── validators/           # Form validation uchun
+│   │       └── email_validator.dart
+│   │       └── phone_validator.dart
+│   ├── theme/                    # Ilova temasi
+│   │   ├── app_theme.dart        # Umumiy tema sozlamalari
+│   │   ├── dark_theme.dart       # Qorong'u tema
+│   │   └── light_theme.dart      # Yorug' tema
+│   └── localization/             # Lokalizatsiya (til sozlamalari)
+│       ├── app_localization.dart # Lokalizatsiyani boshqarish logikasi
+│       ├── app_localization_delegate.dart # GetX uchun delegate
+│       ├── en.json               # Inglizcha tarjimalar (JSON formatida)
+│       ├── uz.json               # O'zbekcha tarjimalar (JSON formatida)
+│       └── ru.json               # Ruscha tarjimalar (JSON formatida)
+│
+├── data/
+│   ├── datasources/
+│   │   ├── remote/               # API bilan ishlash
+│   │   │   ├── auth_api_service.dart # Autentifikatsiya uchun API service
+│   │   │   ├── salon_api_service.dart # Salonlar bilan ishlash uchun API service
+│   │   │   └── user_api_service.dart # Foydalanuvchi ma'lumotlari uchun API service
+│   │   └── local/                # Local ma'lumotlar bazasi bilan ishlash
+│   │       ├── database_helper.dart   # Ma'lumotlar bazasiga ulanish va so'rovlar
+│   │       └── preferences_helper.dart # SharedPreferences bilan ishlash
+│   ├── models/                   # Data Transfer Object (DTO) lar
+│   │   ├── remote/               # API dan keladigan ma'lumotlar uchun
+│   │   │   ├── auth/
+│   │   │   │   ├── login_request.dart
+│   │   │   │   └── login_response.dart
+│   │   │   ├── salon/
+│   │   │   │   └── salon_dto.dart
+│   │   │   └── user/
+│   │   │       └── user_dto.dart
+│   │   └── local/                # Local DB da saqlanadigan ma'lumotlar uchun
+│   │       └── user_settings.dart
+│   ├── repositories/             # Repository implementatsiyalari
+│   │   ├── auth_repository_impl.dart
+│   │   └── salon_repository_impl.dart
+│   └── mappers/                  # DTO larni Entity larga va aksincha o'giruvchi mapperlar
+│       ├── user_mapper.dart
+│       └── salon_mapper.dart
+│
+├── domain/
+│   ├── entities/                 # Biznes obyektlari (hech qanday frameworkka bog'liq bo'lmagan)
+│   │   ├── user/
+│   │   │   ├── user.dart         # Foydalanuvchi
+│   │   │   └── user_location.dart # Foydalanuvchi manzili
+│   │   ├── salon/
+│   │   │   ├── salon.dart         # Salon
+│   │   │   ├── service.dart      # Salon xizmatlari
+│   │   │   └── review.dart        # Salon sharhlari
+│   │   └── booking/
+│   │       └── appointment.dart   # Uchrashuv/Bron
+│   ├── repositories/             # Repository interfeyslari (abstrakt klasslar)
+│   │   ├── auth_repository.dart  # Autentifikatsiya uchun
+│   │   └── salon_repository.dart # Salonlar bilan ishlash uchun
+│   └── usecases/                 # Biznes logikani o'z ichiga olgan UseCase lar
+│       ├── auth/
+│       │   ├── login_usecase.dart
+│       │   └── register_usecase.dart
+│       ├── salon/
+│       │   ├── get_all_salons_usecase.dart
+│       │   ├── get_salon_details_usecase.dart
+│       │   └── search_salons_usecase.dart
+│       └── booking/
+│           └── book_appointment_usecase.dart
+│
+├── presentation/
+│   ├── bindings/                 # GetX Controller Bindinglari
+│   │   ├── home_binding.dart
+│   │   └── salon_details_binding.dart
+│   ├── controllers/              # GetX Controllerlar
+│   │   ├── auth_controller.dart
+│   │   ├── home_controller.dart
+│   │   └── salon_details_controller.dart
+│   ├── pages/                    # Ilova sahifalari (UI)
+│   │   ├── splash/               # Splash ekrani
+│   │   │   └── splash_page.dart
+│   │   ├── onboarding/           # Onboarding ekrani
+│   │   │   └── onboarding_page.dart
+│   │   ├── auth/                 # Autentifikatsiya (kirish/ro'yxatdan o'tish)
+│   │   │   ├── login/
+│   │   │   │   └── login_page.dart
+│   │   │   └── register/
+│   │   │       └── register_page.dart
+│   │   ├── home/                 # Asosiy sahifa
+│   │   │   └── home_page.dart
+│   │   ├── salon_details/       # Salon haqida ma'lumot
+│   │   │   └── salon_details_page.dart
+│   │   ├── search/               # Qidiruv sahifasi
+│   │   │   └── search_page.dart
+│   │   ├── booking/              # Bron qilish sahifasi
+│   │   │   └── booking_page.dart
+│   │   ├── profile/              # Foydalanuvchi profili
+│   │   │   └── profile_page.dart
+│   │   ├── settings/             # Sozlamalar sahifasi
+│   │   │   └── settings_page.dart
+│   │   └── message/              # Xabarlar sahifasi
+│   │       └── message_page.dart
+│   ├── widgets/                  # Qayta ishlatiladigan UI elementlari
+│   │   ├── common/               # Umumiy widgetlar
+│   │   │   ├── app_bar.dart
+│   │   │   └── button.dart
+│   │   ├── salon/                # Salonga oid widgetlar
+│   │   │   ├── salon_card.dart   # Salon kartochkasi
+│   │   │   └── service_item.dart # Xizmat ko'rsatish elementi
+│   │   └── forms/                # Form elementlari
+│   │       ├── text_field.dart
+│   │       └── date_picker.dart
+│   └── routes/                   # GetX Route'lari
+│       ├── app_pages.dart        # Sahifalar ro'yxati
+│       └── app_routes.dart       # Route nomlari
+│
+└── main.dart                     # Ilovaga kirish nuqtasi
