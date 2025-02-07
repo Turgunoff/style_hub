@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 // import 'package:get/get.dart';
 // import 'package:style_hub/presentation/pages/splash/controllers/splash_controller.dart';
 
-import '../../controllers/splash_controller.dart';
+import '../../../controllers/splash_controller.dart';
 
 class SplashView extends GetView<SplashController> {
   const SplashView({Key? key}) : super(key: key);

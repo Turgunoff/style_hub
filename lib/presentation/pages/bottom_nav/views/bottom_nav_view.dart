@@ -4,7 +4,7 @@ import 'package:style_hub/presentation/controllers/bottom_nav_controller.dart';
 import 'package:style_hub/presentation/pages/profile/views/profile_view.dart'; // Example
 import 'package:style_hub/presentation/pages/cart/views/cart_view.dart';
 
-import '../home/home_page.dart'; // Example
+import '../../home/views/home_view.dart'; // Example
 
 class BottomNavView extends StatelessWidget {
   BottomNavView({Key? key}) : super(key: key);

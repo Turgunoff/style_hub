@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
-import '../bindings/onboarding_binding.dart';
-import '../bindings/bottom_nav_binding.dart';
-import '../pages/bottom_nav/bottom_nav_view.dart';
-import '../pages/onboarding/onboarding_page.dart';
+import '../pages/onboarding/bindings/onboarding_binding.dart';
+import '../pages/bottom_nav/bindings/bottom_nav_binding.dart';
+import '../pages/bottom_nav/views/bottom_nav_view.dart';
+import '../pages/onboarding/views/onboarding_page.dart';
 import 'app_routes.dart';
-import '../pages/splash/splash_page.dart';
-import '../pages/home/home_page.dart';
-import '../bindings/splash_binding.dart';
-import '../bindings/home_binding.dart';
+import '../pages/splash/views/splash_page.dart';
+import '../pages/home/views/home_view.dart';
+import '../pages/splash/bindings/splash_binding.dart';
+import '../pages/home/bindings/home_binding.dart';
 
 class AppPages {
   static final routes = [
