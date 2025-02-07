@@ -4,5 +4,7 @@ class InitialBinding extends Bindings {
   @override
   void dependencies() {
     // Controllers va servicelarga dependency injection
+    
+    
   }
 }

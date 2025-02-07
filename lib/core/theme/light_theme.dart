@@ -6,7 +6,7 @@ final lightTheme = ThemeData(
     primary: Color(0xFFF16B00), // Asosiy rang
     background: Color(0xFFFFFFFF), // Orqa fon rangi
     onBackground: Colors.black, // Asosiy text rangi (qora)
-    secondary: Color(0xFF383838), // Ikkilamchi text rangi
+    secondary: Color(0xFFFDECD2), // Ikkilamchi text rangi
     onSecondary: Colors
         .white, // Ikkilamchi elementlar ustidagi text (oq, masalan, button)
     surface: Colors.white, // Card, Dialog, etc. surfaces
@@ -15,7 +15,7 @@ final lightTheme = ThemeData(
   ),
   // AppBar uchun alohida sozlamalar (agar kerak bo'lsa)
   appBarTheme: const AppBarTheme(
-    backgroundColor: Color(0xFFF16B00),
+    backgroundColor: Colors.white,
     foregroundColor: Colors.white, // AppBar title color
     iconTheme: IconThemeData(color: Colors.white), // AppBar icon color
   ),
