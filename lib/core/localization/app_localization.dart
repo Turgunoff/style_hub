@@ -9,6 +9,9 @@ class AppLocalization extends Translations {
           'next': 'Next',
           'skip': 'Skip',
           'get_started': 'Get Started',
+          'nearby_location': 'Nearby Your Location',
+          'see_all': 'See All',
+          'most_popular': 'Most Popular',
         },
         'uz_UZ': {
           'hello': 'Salom',
@@ -16,6 +19,9 @@ class AppLocalization extends Translations {
           'next': 'Keyingisi',
           'skip': 'O\'tkazib yuborish',
           'get_started': 'Boshlash',
+          'nearby_location': 'Yaqin manzildagilar',
+          'see_all': 'Barchasi',
+          'most_popular': 'Ommabop',
         },
       };
 }

@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import '../pages/booking/bindings/booking_binding.dart';
+import '../pages/booking/views/booking_view.dart';
 import '../pages/onboarding/bindings/onboarding_binding.dart';
 import '../pages/bottom_nav/bindings/bottom_nav_binding.dart';
 import '../pages/bottom_nav/views/bottom_nav_view.dart';
@@ -30,6 +32,12 @@ class AppPages {
       name: AppRoutes.ONBOARDING,
       page: () => OnboardingPage(),
       binding: OnboardingBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.BOOKING,
+      page: () => const BookingView(),
+      binding: BookingBinding(),
+    
     ),
   ];
 }

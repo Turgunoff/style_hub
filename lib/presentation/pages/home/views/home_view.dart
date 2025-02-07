@@ -3,12 +3,11 @@ import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:style_hub/presentation/controllers/home_controller.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(HomeController());
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -358,6 +357,7 @@ class HomeView extends StatelessWidget {
                   initState: (_) {},
                   builder: (_) {
                     return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemCount: 22, // Replace with the actual number of items
                       itemBuilder: (context, index) {
