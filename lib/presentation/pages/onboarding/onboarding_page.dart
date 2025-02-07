@@ -33,7 +33,7 @@ class OnboardingPage extends GetView<OnboardingController> {
             PageView.builder(
               controller: controller.pageController,
               itemCount: pages.length,
-              onPageChanged: controller.currentPageIndex,
+              onPageChanged: controller.currentPageIndex.call,
               itemBuilder: (context, index) {
                 return pages[index];
               },
@@ -72,7 +72,7 @@ class OnboardingPage extends GetView<OnboardingController> {
                               curve: Curves.ease,
                             );
                           } else {
-                            Get.offAllNamed(AppRoutes.HOME);
+                            Get.offAllNamed(AppRoutes.BOTTOM_NAV);
                           }
                         },
                         child: Text(
@@ -95,7 +95,8 @@ class OnboardingPage extends GetView<OnboardingController> {
                   pages.length,
                   (index) => Obx(() => Container(
                         margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: controller.currentPageIndex.value == index ? 12 : 8,
+                        width:
+                            controller.currentPageIndex.value == index ? 12 : 8,
                         height: 8,
                         decoration: BoxDecoration(
                           color: controller.currentPageIndex.value == index

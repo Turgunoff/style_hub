@@ -10,7 +10,6 @@ class SplashController extends GetxController {
   void onInit() {
     super.onInit();
     _checkFirstLaunch();
-    print('onInit');
   }
 
   Future<void> _checkFirstLaunch() async {
@@ -24,11 +23,10 @@ class SplashController extends GetxController {
       _storage.write('isFirstLaunch', false);
       Get.offAllNamed(
           AppRoutes.ONBOARDING); // offNamed o'rniga offAllNamed ishlating
-      print('First launch');
     } else {
       // Keyingi ochilishlar
-      Get.offAllNamed(AppRoutes.HOME); // offNamed o'rniga offAllNamed ishlating
-      print('Not first launch');
+      Get.offAllNamed(
+          AppRoutes.BOTTOM_NAV); // offNamed o'rniga offAllNamed ishlating
     }
   }
 }
