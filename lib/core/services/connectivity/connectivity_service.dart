@@ -3,6 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 class ConnectivityService extends GetxService {
   final _connectivity = Connectivity();
+  final isConnected = true.obs;
 
   Future<ConnectivityService> init() async {
     _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
@@ -10,6 +11,6 @@ class ConnectivityService extends GetxService {
   }
 
   void _updateConnectionStatus(ConnectivityResult result) {
-    // Handle connectivity changes
+    isConnected.value = result != ConnectivityResult.none;
   }
 }

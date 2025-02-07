@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 final lightTheme = ThemeData(
   useMaterial3: true, // Use Material 3 design
   colorScheme: const ColorScheme.light(
-    primary: Color(0xFFF16B00), // Asosiy rang
+    primary: Color(0xFFF16D00), // Asosiy rang
     background: Color(0xFFFFFFFF), // Orqa fon rangi
     onBackground: Colors.black, // Asosiy text rangi (qora)
     secondary: Color(0xFFFDECD2), // Ikkilamchi text rangi
@@ -15,9 +15,9 @@ final lightTheme = ThemeData(
   ),
   // AppBar uchun alohida sozlamalar (agar kerak bo'lsa)
   appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.white,
-    foregroundColor: Colors.white, // AppBar title color
-    iconTheme: IconThemeData(color: Colors.white), // AppBar icon color
+    backgroundColor: Color(0xFFFFFFFF), // primary rang bilan bir xil
+    foregroundColor: Colors.black, // qora rang
+    iconTheme: IconThemeData(color: Colors.black), // qora rang
   ),
   // Boshqa sozlamalar (masalan, textTheme, buttonTheme, etc.)
   textTheme: const TextTheme(

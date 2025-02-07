@@ -3,6 +3,11 @@
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  final count = 0.obs;
-  
+  int _selectedCategoryIndex = 0;
+  int get selectedCategoryIndex => _selectedCategoryIndex;
+
+  void setSelectedCategoryIndex(int index) {
+    _selectedCategoryIndex = index;
+    update();
+  }
 }

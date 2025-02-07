@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import '../routes/app_routes.dart';
 
 class SplashController extends GetxController {
-  final _storage = Get.find<GetStorage>(); // GetStorage instance
+  final _storage = GetStorage(); // GetStorage instance
 
   @override
   void onInit() {
