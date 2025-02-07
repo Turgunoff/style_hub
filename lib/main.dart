@@ -67,7 +67,6 @@ class MyApp extends StatelessWidget {
       // Ilova nomi
       title: AppConstants.appName,
 
-      // Debug banner ni o'chirish
       debugShowCheckedModeBanner: false,
 
       // Tema sozlamalari
