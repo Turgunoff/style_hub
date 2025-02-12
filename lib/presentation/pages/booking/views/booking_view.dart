@@ -82,8 +82,8 @@ class BookingView extends GetView<BookingController> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        booking.salonImage,
+                      child: Image.asset(
+                        'assets/image/photo.jpg',
                         width: 60,
                         height: 60,
                         fit: BoxFit.cover,
