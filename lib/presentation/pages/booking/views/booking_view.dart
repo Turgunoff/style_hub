@@ -60,15 +60,18 @@ class BookingView extends GetView<BookingController> {
   Widget _buildTabButton(BuildContext context, String text, int index) {
     return Obx(() {
       final isSelected = controller.selectedTabIndex.value == index;
+
       return InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         onTap: () => controller.changeTabIndex(index),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           decoration: BoxDecoration(
             color: isSelected
                 ? Theme.of(context).colorScheme.primary
                 : Colors.white,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(100),
             border: Border.all(
               width: 2,
               color: Theme.of(context).colorScheme.primary,
@@ -124,53 +127,55 @@ class BookingCard extends StatelessWidget {
               children: [
                 Text(
                   '$date - $time',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: status == "Cancelled"
-                        ? Colors.red.shade100
+                        ? Colors.red
                         : (status == 'Completed'
-                            ? Colors.green.shade100
-                            : Colors.yellow
-                                .shade100), // Statusga qarab rang, completed va upcoming
+                            ? Colors.green
+                            : Theme.of(context)
+                                .colorScheme
+                                .primary), // Statusga qarab rang, completed va upcoming
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     status,
-                    style: TextStyle(
-                        color: status == "Cancelled"
-                            ? Colors.red
-                            : (status == 'Completed'
-                                ? Colors.green
-                                : Colors.yellow.shade700), //rang
-                        fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: status == "Cancelled"
+                              ? Colors.white
+                              : (status == 'Completed'
+                                  ? Colors.white
+                                  : Colors.white),
+                        ),
                   ),
                 )
               ],
             ),
-            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Divider(
+                color: Colors.grey.shade100,
+              ),
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.network(
                     // Internetdan rasm yuklash
                     imageUrl,
-                    width: 80,
-                    height: 80,
+                    width: 100,
+                    height: 100,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        width: 80,
-                        height: 80,
+                        width: 100,
+                        height: 100,
                         color: Colors.grey.shade300,
                         child: const Icon(
                           Icons.image_not_supported,
@@ -187,36 +192,67 @@ class BookingCard extends StatelessWidget {
                     children: [
                       Text(
                         salonName,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         salonAddress,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey.shade600,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              color: Colors.grey.shade700,
+                            ),
                       ),
                       const SizedBox(height: 8),
-                      const Text(
+                      Text(
                         'Services:',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
+                      const SizedBox(height: 4),
                       Text(
                         services
                             .join(', '), // Servislarni vergul bilan ajratish
-                        style: TextStyle(color: Colors.grey.shade700),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: Theme.of(context).colorScheme.primary),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Divider(
+                    color: Colors.grey.shade100,
+                  ),
+                ),
+                // Conditional rendering based on status
+                if (status == "Completed")
+                  ElevatedButton(
+                    onPressed: () {
+                      // Add your view details action here
+                    },
+                    child: Text('View Details'),
+                  )
+                else if (status == "Upcoming")
+                  ElevatedButton(
+                    onPressed: () {
+                      // Add your cancel action here
+                    },
+                    child: Text('Cancel'),
+                  )
+                else if (status == "Cancelled")
+                  ElevatedButton(
+                    onPressed: () {
+                      // Add your view details action here
+                    },
+                    child: Text('View Details'),
+                  ),
+              ],
+            )
           ],
         ),
       ),
