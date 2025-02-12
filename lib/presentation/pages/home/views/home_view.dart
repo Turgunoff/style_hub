@@ -260,6 +260,14 @@ class HomeView extends GetView<HomeController> {
                               'assets/image/photo.jpg',
                               width: 80,
                               height: 80,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  width: 80,
+                                  height: 80,
+                                  color: Colors.grey[300],
+                                  child: Icon(Icons.error),
+                                );
+                              },
                             ),
                           ),
                           SizedBox(width: 16),

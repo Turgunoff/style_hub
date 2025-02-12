@@ -11,6 +11,11 @@ class ConnectivityService extends GetxService {
   }
 
   void _updateConnectionStatus(ConnectivityResult result) {
+    final wasConnected = isConnected.value;
     isConnected.value = result != ConnectivityResult.none;
+
+    if (wasConnected && !isConnected.value) {
+      Get.snackbar('Ogohlantirish', 'Internet aloqasi uzildi');
+    }
   }
 }

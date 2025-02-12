@@ -13,20 +13,26 @@ class SplashController extends GetxController {
   }
 
   Future<void> _checkFirstLaunch() async {
-    await Future.delayed(Duration(seconds: 3)); // Kuting 3 sekund
+    try {
+      await Future.delayed(Duration(seconds: 3)); // Kuting 3 sekund
 
-    // Read the value from GetStorage
-    final isFirstLaunch = _storage.read<bool>('isFirstLaunch');
+      // Read the value from GetStorage
+      final isFirstLaunch = _storage.read<bool>('isFirstLaunch');
 
-    if (isFirstLaunch == null) {
-      // Birinchi marta ochilganda
-      _storage.write('isFirstLaunch', false);
-      Get.offAllNamed(
-          AppRoutes.ONBOARDING); // offNamed o'rniga offAllNamed ishlating
-    } else {
-      // Keyingi ochilishlar
-      Get.offAllNamed(
-          AppRoutes.BOTTOM_NAV); // offNamed o'rniga offAllNamed ishlating
+      if (isFirstLaunch == null) {
+        // Birinchi marta ochilganda
+        _storage.write('isFirstLaunch', false);
+        Get.offAllNamed(
+            AppRoutes.ONBOARDING); // offNamed o'rniga offAllNamed ishlating
+      } else {
+        // Keyingi ochilishlar
+        Get.offAllNamed(
+            AppRoutes.BOTTOM_NAV); // offNamed o'rniga offAllNamed ishlating
+      }
+    } catch (e) {
+      print('Error in _checkFirstLaunch: $e');
+      Get.offAllNamed(AppRoutes
+          .BOTTOM_NAV); // Xatolik yuz berganda ham asosiy sahifaga o'tish
     }
   }
 }
