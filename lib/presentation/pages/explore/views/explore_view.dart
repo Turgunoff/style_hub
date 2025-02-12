@@ -13,7 +13,7 @@ class ExploreView extends GetView<ExploreController> {
         title: Text('Explore'),
       ),
       body: Center(
-        child: Text('Explore Screen Content'),
+        child: Text('Explore Screen '),
       ),
     );
   }
