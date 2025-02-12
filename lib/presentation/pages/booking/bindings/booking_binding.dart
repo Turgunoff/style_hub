@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
-
 import '../../../controllers/booking_controller.dart';
 
-class BookingBinding extends Bindings {
+class BookingBinding implements Bindings {
   @override
   void dependencies() {
-    Get.put(BookingController());
+    Get.lazyPut<BookingController>(
+      () => BookingController(),
+    );
   }
 }

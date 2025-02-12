@@ -1,72 +1,65 @@
 import 'package:get/get.dart';
-
-import '../../core/data/booking.dart'; // To'g'ri import qiling
+import '../../core/data/booking.dart';
 
 class BookingController extends GetxController {
-  final selectedTabIndex = 0.obs;
+  final bookings = <Booking>[].obs;
 
-  //dummy data
-  final List<Booking> _allBookings = [
-    Booking(
-      salonName: 'Lighthouse Barbers',
-      salonAddress: '5010 Hudson Plaza',
-      date: 'Dec 22, 2024',
-      time: '10:00 AM',
-      services: [
-        'Quiff Haircut',
-        'Thin Shaving',
-        'Aloe Vera Shampoo Hair Wash'
-      ],
-      status: 'Cancelled',
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAGYI5_tBpHqczmd8x-wG98j7d8u9jQ1T9-X94zN6zXg&s',
-    ),
-    Booking(
-      salonName: 'Quinaatura Salon',
-      salonAddress: '7892 Prairieview Avenue',
-      date: 'Nov 20, 2024',
-      time: '13:00 PM',
-      services: ['Undercut Haircut', 'Regular Shaving', 'Natural Hair Wash'],
-      status: 'Cancelled',
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsNGg-6oQxa7vV4eJv8-n-vXM_wI8W6OyO-l8L9wz7XQ&s',
-    ),
-    Booking(
-      salonName: 'Luxuriate Barber',
-      salonAddress: '0496 8th Street',
-      date: 'Oct 19, 2024',
-      time: '16:00 PM',
-      services: ['Test Service1', 'Test Service2', 'Test Service3'],
-      status: 'Cancelled',
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_JOqTzB_hhuAJv_w_G-s9-H09N9gO-hGhm_16o8Vl8A&s',
-    ),
-  ];
-
-  List<Booking> get upcomingBookings =>
-      _allBookings.where((booking) => booking.status == 'Upcoming').toList();
-
-  List<Booking> get completedBookings =>
-      _allBookings.where((booking) => booking.status == 'Completed').toList();
-
-  List<Booking> get cancelledBookings =>
-      _allBookings.where((booking) => booking.status == 'Cancelled').toList();
-
-  void changeTabIndex(int index) {
-    selectedTabIndex.value = index;
+  @override
+  void onInit() {
+    super.onInit();
+    fetchBookings();
   }
 
-  List<Booking> get displayedBookings {
-    // Hozirgi tabga qarab bookinglarni qaytaradi
-    switch (selectedTabIndex.value) {
-      case 0:
-        return upcomingBookings;
-      case 1:
-        return completedBookings;
-      case 2:
-        return cancelledBookings;
-      default:
-        return [];
+  Future<void> fetchBookings() async {
+    try {
+      // API call or local data fetch
+      // For now, using dummy data
+      bookings.value = [
+        Booking(
+          id: '1',
+          salonName: 'Bella Curls',
+          salonImage: 'https://example.com/image.jpg',
+          serviceName: 'Haircut & Styling',
+          date: '2024-03-20',
+          time: '14:00',
+          status: 'upcoming',
+        ),
+        // Add more dummy bookings
+      ];
+    } catch (e) {
+      print('Error fetching bookings: $e');
+      Get.snackbar(
+        'error'.tr,
+        'error_fetching_bookings'.tr,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> cancelBooking(String bookingId) async {
+    try {
+      // API call to cancel booking
+      Get.snackbar(
+        'success'.tr,
+        'booking_cancelled'.tr,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      print('Error cancelling booking: $e');
+      Get.snackbar(
+        'error'.tr,
+        'error_cancelling_booking'.tr,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> rescheduleBooking(String bookingId) async {
+    try {
+      // Navigate to reschedule screen
+      Get.toNamed('/reschedule', arguments: bookingId);
+    } catch (e) {
+      print('Error navigating to reschedule: $e');
     }
   }
 }

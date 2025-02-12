@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:style_hub/presentation/controllers/bottom_nav_controller.dart';
 import 'package:style_hub/presentation/pages/booking/views/booking_view.dart';
 import 'package:style_hub/presentation/pages/profile/views/profile_view.dart'; // Example
@@ -8,39 +9,76 @@ import 'package:style_hub/presentation/pages/cart/views/cart_view.dart';
 import '../../home/views/home_view.dart'; // Example
 
 class BottomNavView extends GetView<BottomNavController> {
-  BottomNavView({Key? key}) : super(key: key);
+  const BottomNavView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: Obx(() => _pages[_controller.selectedIndex.value]),
-      body: Obx(() => IndexedStack(
-            index: controller.selectedIndex.value, //boshqa BottomNavController
-            children: [
-              HomeView(),
-              BookingView(),
-              CartView(),
-              ProfileView(),
-            ],
-          )),
+      body: Obx(() => controller.pages[controller.currentIndex.value]),
       bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-          currentIndex: controller.selectedIndex.value,
-          onTap: controller.changeIndex,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                ),
-                label: 'Home'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_today), label: 'Booking'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart), label: 'Cart'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-          ],
+        () => Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                blurRadius: 10,
+                offset: const Offset(0, -5),
+              ),
+            ],
+          ),
+          child: BottomNavigationBar(
+            currentIndex: controller.currentIndex.value,
+            onTap: controller.changePage,
+            type: BottomNavigationBarType.fixed,
+            elevation: 0,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            selectedItemColor: Theme.of(context).colorScheme.primary,
+            unselectedItemColor: Colors.grey,
+            selectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 12,
+            ),
+            items: [
+              _bottomNavigationBarItem(
+                icon: IconsaxPlusLinear.home,
+                activeIcon: IconsaxPlusBold.home,
+                label: 'home'.tr,
+              ),
+              _bottomNavigationBarItem(
+                icon: IconsaxPlusLinear.calendar,
+                activeIcon: IconsaxPlusBold.calendar,
+                label: 'booking'.tr,
+              ),
+              _bottomNavigationBarItem(
+                icon: IconsaxPlusLinear.heart,
+                activeIcon: IconsaxPlusBold.heart,
+                label: 'favorite'.tr,
+              ),
+              _bottomNavigationBarItem(
+                icon: IconsaxPlusLinear.profile_circle,
+                activeIcon: IconsaxPlusBold.profile_circle,
+                label: 'profile'.tr,
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  BottomNavigationBarItem _bottomNavigationBarItem({
+    required IconData icon,
+    required IconData activeIcon,
+    required String label,
+  }) {
+    return BottomNavigationBarItem(
+      icon: Icon(icon),
+      activeIcon: Icon(activeIcon),
+      label: label,
     );
   }
 }
