@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:style_hub/presentation/pages/explore/bindings/explore_binding.dart';
+import 'package:style_hub/presentation/pages/explore/views/explore_view.dart';
 import '../pages/booking/bindings/booking_binding.dart';
 import '../pages/booking/views/booking_view.dart';
 import '../pages/onboarding/bindings/onboarding_binding.dart';
@@ -29,6 +31,11 @@ class AppPages {
       binding: HomeBinding(),
     ),
     GetPage(
+      name: AppRoutes.EXPLORE,
+      page: () => const ExploreView(),
+      binding: ExploreBinding(),
+    ),
+    GetPage(
       name: AppRoutes.ONBOARDING,
       page: () => OnboardingPage(),
       binding: OnboardingBinding(),
@@ -37,7 +44,6 @@ class AppPages {
       name: AppRoutes.BOOKING,
       page: () => const BookingView(),
       binding: BookingBinding(),
-    
     ),
   ];
 }

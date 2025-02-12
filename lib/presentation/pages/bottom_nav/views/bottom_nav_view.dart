@@ -49,6 +49,11 @@ class BottomNavView extends GetView<BottomNavController> {
                 label: 'home'.tr,
               ),
               _bottomNavigationBarItem(
+                icon: IconsaxPlusLinear.location,
+                activeIcon: IconsaxPlusBold.location,
+                label: 'explore'.tr,
+              ),
+              _bottomNavigationBarItem(
                 icon: IconsaxPlusLinear.calendar,
                 activeIcon: IconsaxPlusBold.calendar,
                 label: 'booking'.tr,

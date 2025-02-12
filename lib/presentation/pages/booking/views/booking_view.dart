@@ -27,7 +27,7 @@ class BookingView extends GetView<BookingController> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildTabButton(context, "Upcoming", 0),
                 _buildTabButton(context, "Completed", 1),
@@ -66,7 +66,7 @@ class BookingView extends GetView<BookingController> {
         highlightColor: Colors.transparent,
         onTap: () => controller.changeTabIndex(index),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: isSelected
                 ? Theme.of(context).colorScheme.primary
