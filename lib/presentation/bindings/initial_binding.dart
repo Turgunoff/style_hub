@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../controllers/booking_controller.dart';
 import '../controllers/bottom_nav_controller.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/splash_controller.dart';
@@ -11,5 +12,6 @@ class InitialBinding extends Bindings {
     Get.put(SplashController());
     Get.put(HomeController());
     Get.put(BottomNavController());
+    Get.put(BookingController());
   }
 }
