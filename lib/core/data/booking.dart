@@ -1,19 +1,19 @@
 class Booking {
-  final String id;
   final String salonName;
-  final String salonImage;
-  final String serviceName;
-  final String date;
+  final String salonAddress;
+  final String date; // String o'rniga DateTime ishlatsangiz ham bo'ladi
   final String time;
-  final String status;
+  final List<String> services;
+  final String status; // "Upcoming", "Completed", "Cancelled"
+  final String imageUrl; // Salon rasmi URL
 
   Booking({
-    required this.id,
     required this.salonName,
-    required this.salonImage,
-    required this.serviceName,
+    required this.salonAddress,
     required this.date,
     required this.time,
+    required this.services,
     required this.status,
+    required this.imageUrl,
   });
 }
