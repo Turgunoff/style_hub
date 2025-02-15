@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
       fallbackLocale: const Locale('en', 'US'), // Zaxira til
 
       // Routing
-      initialRoute: AppRoutes.SPLASH,
+      initialRoute: AppRoutes.BOTTOM_NAV,
       getPages: AppPages.routes,
 
       // Initial binding

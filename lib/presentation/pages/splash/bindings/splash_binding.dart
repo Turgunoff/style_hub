@@ -7,6 +7,6 @@ class SplashBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<GetStorage>(() => GetStorage()); // Lazy initialization
-    Get.put(SplashController());
+    Get.lazyPut<SplashController>(() => SplashController());
   }
 }

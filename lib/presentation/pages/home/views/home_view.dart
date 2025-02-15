@@ -185,36 +185,33 @@ class HomeView extends GetView<HomeController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SizedBox(
-                height: 40, // Set a fixed height for the ListView
-                child: GetBuilder<HomeController>(
-                  init: HomeController(),
-                  initState: (_) {},
-                  builder: (_) {
-                    return ListView.builder(
+                height: 40,
+                child: Obx(() => ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 22, // Replace with the actual number of items
+                      itemCount: controller.categories.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: () {
-                            controller.setSelectedCategoryIndex(index);
-                          },
+                          onTap: () =>
+                              controller.setSelectedCategoryIndex(index),
                           child: Container(
-                            margin: EdgeInsets.only(right: 8),
-                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            margin: const EdgeInsets.only(right: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
                             decoration: BoxDecoration(
-                              color: controller.selectedCategoryIndex == index
+                              color: controller.selectedCategoryIndex.value ==
+                                      index
                                   ? Theme.of(context).colorScheme.primary
                                   : Theme.of(context).colorScheme.secondary,
                               borderRadius: BorderRadius.circular(100),
                             ),
                             child: Center(
                               child: Text(
-                                'Item ${index * 999}',
+                                controller.categories[index],
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyLarge!
                                     .copyWith(
-                                      color: controller.selectedCategoryIndex ==
+                                      color: controller.selectedCategoryIndex
+                                                  .value ==
                                               index
                                           ? Colors.white
                                           : Theme.of(context).primaryColor,
@@ -224,9 +221,7 @@ class HomeView extends GetView<HomeController> {
                           ),
                         );
                       },
-                    );
-                  },
-                ),
+                    )),
               ),
             ),
             SizedBox(
@@ -363,7 +358,7 @@ class HomeView extends GetView<HomeController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SizedBox(
-                height: 40, // Set a fixed height for the ListView
+                height: 40,
                 child: GetBuilder<HomeController>(
                   init: HomeController(),
                   initState: (_) {},
@@ -371,7 +366,7 @@ class HomeView extends GetView<HomeController> {
                     return ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.horizontal,
-                      itemCount: 22, // Replace with the actual number of items
+                      itemCount: 22,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {

@@ -3,11 +3,28 @@
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  int _selectedCategoryIndex = 0;
-  int get selectedCategoryIndex => _selectedCategoryIndex;
+  final selectedCategoryIndex = 0.obs; // RxInt tipidagi observable
+  final categories = <String>[].obs; // RxList tipidagi observable
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Kategoriyalarni yuklash
+    loadCategories();
+  }
+
+  void loadCategories() {
+    categories.value = [
+      'All',
+      'Haircut',
+      'Shaving',
+      'Facial',
+      'Hair Color',
+      'Massage',
+    ];
+  }
 
   void setSelectedCategoryIndex(int index) {
-    _selectedCategoryIndex = index;
-    update();
+    selectedCategoryIndex.value = index;
   }
 }

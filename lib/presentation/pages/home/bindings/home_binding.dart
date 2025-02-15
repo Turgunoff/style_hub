@@ -5,7 +5,12 @@ import '../../../controllers/home_controller.dart';
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(HomeController());
+    //home lazy put
+    Get.lazyPut<HomeController>(
+      () => HomeController(),
+    );
+
+    // Get.put(HomeController());
     // Get.put(BookingController());
 
     // Add controllers if needed

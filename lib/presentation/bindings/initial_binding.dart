@@ -1,23 +1,23 @@
 import 'package:get/get.dart';
-import 'package:style_hub/presentation/controllers/booking_controller.dart';
-import 'package:style_hub/presentation/controllers/inbox_controller.dart';
-import 'package:style_hub/presentation/controllers/profile_controller.dart';
-import 'package:style_hub/presentation/pages/explore/bindings/explore_binding.dart';
-
-import '../controllers/bottom_nav_controller.dart';
-import '../controllers/home_controller.dart';
-import '../controllers/splash_controller.dart';
+import '../pages/booking/bindings/booking_binding.dart';
+import '../pages/explore/bindings/explore_binding.dart';
+import '../pages/home/bindings/home_binding.dart';
+import '../pages/inbox/bindings/inbox_binding.dart';
+import '../pages/onboarding/bindings/onboarding_binding.dart';
+import '../pages/profile/bindings/profile_binding.dart';
+import '../pages/splash/bindings/splash_binding.dart';
 
 class InitialBinding extends Bindings {
   @override
   void dependencies() {
     // Controllers va servicelarga dependency injection
-    Get.put(SplashController());
-    Get.put(HomeController());
-    Get.put(BottomNavController());
-    Get.put(BookingController());
-    Get.put(ExploreBinding());
-    Get.put(ProfileController());
-    Get.put(InboxController());
+    // Bindinglarni e'lon qilish
+    SplashBinding().dependencies();
+    HomeBinding().dependencies();
+    BookingBinding().dependencies();
+    ExploreBinding().dependencies();
+    ProfileBinding().dependencies();
+    InboxBinding().dependencies();
+    OnboardingBinding().dependencies();
   }
 }
