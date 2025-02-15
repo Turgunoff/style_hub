@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:style_hub/presentation/controllers/home_controller.dart';
 
+import '../../../routes/app_routes.dart';
+
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
 
@@ -236,7 +238,9 @@ class HomeView extends GetView<HomeController> {
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed(AppRoutes.PROFILE_DETAILS);
+                    },
                     child: Container(
                       margin: EdgeInsets.only(bottom: 12),
                       padding: EdgeInsets.all(8),

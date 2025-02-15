@@ -4,7 +4,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:style_hub/presentation/controllers/bottom_nav_controller.dart';
 import 'package:style_hub/presentation/pages/booking/views/booking_view.dart';
 import 'package:style_hub/presentation/pages/profile/views/profile_view.dart'; // Example
-import 'package:style_hub/presentation/pages/cart/views/cart_view.dart';
+import 'package:style_hub/presentation/pages/inbox/views/inbox_view.dart';
 
 import '../../home/views/home_view.dart'; // Example
 
@@ -61,7 +61,7 @@ class BottomNavView extends GetView<BottomNavController> {
               _bottomNavigationBarItem(
                 icon: IconsaxPlusLinear.heart,
                 activeIcon: IconsaxPlusBold.heart,
-                label: 'favorite'.tr,
+                label: 'inbox'.tr,
               ),
               _bottomNavigationBarItem(
                 icon: IconsaxPlusLinear.profile_circle,

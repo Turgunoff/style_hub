@@ -6,5 +6,5 @@ abstract class AppRoutes {
   static const EXPLORE = '/explore';
   static const ONBOARDING = '/onboarding';
   static const BOOKING = '/booking';
-
+  static const PROFILE_DETAILS = '/profile_details';
 }

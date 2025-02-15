@@ -12,6 +12,8 @@ import '../pages/splash/views/splash_page.dart';
 import '../pages/home/views/home_view.dart';
 import '../pages/splash/bindings/splash_binding.dart';
 import '../pages/home/bindings/home_binding.dart';
+import '../pages/profile_details/view/profile_details_view.dart';
+import '../pages/profile_details/binding/profile_details_binding.dart';
 
 class AppPages {
   static final routes = [
@@ -44,6 +46,11 @@ class AppPages {
       name: AppRoutes.BOOKING,
       page: () => const BookingView(),
       binding: BookingBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.PROFILE_DETAILS,
+      page: () => const ProfileDetailsView(),
+      binding: ProfileDetailsBinding(),
     ),
   ];
 }

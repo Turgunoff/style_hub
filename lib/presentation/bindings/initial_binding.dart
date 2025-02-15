@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:style_hub/presentation/controllers/booking_controller.dart';
+import 'package:style_hub/presentation/controllers/inbox_controller.dart';
 import 'package:style_hub/presentation/controllers/profile_controller.dart';
 import 'package:style_hub/presentation/pages/explore/bindings/explore_binding.dart';
 
@@ -17,5 +18,6 @@ class InitialBinding extends Bindings {
     Get.put(BookingController());
     Get.put(ExploreBinding());
     Get.put(ProfileController());
+    Get.put(InboxController());
   }
 }
