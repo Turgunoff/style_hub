@@ -62,9 +62,7 @@ class HomeView extends GetView<HomeController> {
                   suffixIcon: Icon(IconsaxPlusLinear.setting_4,
                       color: Theme.of(context).primaryColor),
                   filled: true,
-                  fillColor: Theme.of(context)
-                      .colorScheme
-                      .surfaceVariant, // Mos fon rangi
+                  fillColor: Theme.of(context).colorScheme.surfaceVariant,
                   hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         color: Theme.of(context).hintColor, // Hint matni rangi
                       ),
