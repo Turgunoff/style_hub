@@ -20,7 +20,6 @@ class HomeView extends GetView<HomeController> {
             icon: Icon(
               IconsaxPlusLinear.notification,
               size: 24,
-              color: Colors.black,
             ),
             onPressed: () {
               // Get.to(SearchView());
@@ -42,31 +41,35 @@ class HomeView extends GetView<HomeController> {
               margin: EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                color: Color(0xFFF0F0F0),
+                color: Theme.of(context)
+                    .colorScheme
+                    .surfaceVariant, // Light & Dark mode uchun
               ),
               child: TextField(
-                onChanged: (value) {},
+                onTap: () {
+                  // Get.toNamed('/search'); // Search sahifasiga yo‘naltirish
+                },
                 decoration: InputDecoration(
                   hintText: 'Search',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
                   ),
-                  prefixIcon: Icon(IconsaxPlusLinear.search_normal),
+                  prefixIcon: Icon(IconsaxPlusLinear.search_normal,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary), // Ikonkalar rangi
                   suffixIcon: Icon(IconsaxPlusLinear.setting_4,
                       color: Theme.of(context).primaryColor),
                   filled: true,
-                  fillColor: Color(0xFFF0F0F0),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFF0F0F0)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(color: Theme.of(context).hintColor),
-                  enabled: false,
+                  fillColor: Theme.of(context)
+                      .colorScheme
+                      .surfaceVariant, // Mos fon rangi
+                  hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Theme.of(context).hintColor, // Hint matni rangi
+                      ),
                 ),
+                readOnly: true, // Klaviatura chiqmasligi uchun
               ),
             ),
             SizedBox(height: 16),
@@ -79,7 +82,9 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .tertiary, // ✅ LightTheme dagi rang
                           borderRadius: BorderRadius.circular(100),
                         ),
                         padding: EdgeInsets.all(20),
@@ -100,7 +105,7 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: Theme.of(context).colorScheme.tertiary,
                           borderRadius: BorderRadius.circular(100),
                         ),
                         padding: EdgeInsets.all(20),
@@ -121,7 +126,7 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: Theme.of(context).colorScheme.tertiary,
                           borderRadius: BorderRadius.circular(100),
                         ),
                         padding: EdgeInsets.all(20),
@@ -142,7 +147,7 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: Theme.of(context).colorScheme.tertiary,
                           borderRadius: BorderRadius.circular(100),
                         ),
                         padding: EdgeInsets.all(20),
@@ -200,7 +205,7 @@ class HomeView extends GetView<HomeController> {
                               color: controller.selectedCategoryIndex.value ==
                                       index
                                   ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context).colorScheme.secondary,
+                                  : Theme.of(context).colorScheme.tertiary,
                               borderRadius: BorderRadius.circular(100),
                             ),
                             child: Center(
@@ -227,8 +232,9 @@ class HomeView extends GetView<HomeController> {
             SizedBox(
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true, // shrinkWrap ni false qildik
+                physics:
+                    NeverScrollableScrollPhysics(), // Skroll fizikasi yaxshilandi
                 scrollDirection: Axis.vertical,
                 itemCount: 3,
                 itemBuilder: (context, index) {
@@ -236,100 +242,87 @@ class HomeView extends GetView<HomeController> {
                     onTap: () {
                       Get.toNamed(AppRoutes.PROFILE_DETAILS);
                     },
-                    child: Container(
+                    child: Card(
                       margin: EdgeInsets.only(bottom: 12),
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade100,
-                            spreadRadius: 3,
-                            blurRadius: 6,
-                            offset: Offset(0, 0), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Image.asset(
-                              'assets/image/photo.jpg',
-                              width: 80,
-                              height: 80,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  width: 80,
-                                  height: 80,
-                                  color: Colors.grey[300],
-                                  child: Icon(Icons.error),
-                                );
-                              },
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.asset(
+                                'assets/image/photo.jpg',
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit
+                                    .cover, // Rasmlar moslashuvchan bo'lishi uchun
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    width: 80,
+                                    height: 80,
+                                    color: Colors.grey[300],
+                                    child: Icon(Icons.error),
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Bella Curls',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(
-                                        fontWeight: FontWeight.bold,
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Bella Curls',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    '35 London Road',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium!,
+                                  ),
+                                  SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      Icon(IconsaxPlusBold.location,
+                                          color: Theme.of(context).primaryColor,
+                                          size: 16),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        '1.2 km',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!,
                                       ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  '35 London Road',
-                                  style:
-                                      Theme.of(context).textTheme.bodyMedium!,
-                                ),
-                                SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    Icon(IconsaxPlusBold.location,
-                                        color: Theme.of(context).primaryColor,
-                                        size: 16),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      '1.2 km',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!,
-                                    ),
-                                    SizedBox(width: 8),
-                                    Icon(IconsaxPlusLinear.star_1,
-                                        color: Theme.of(context).primaryColor,
-                                        size: 16),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      '4.5',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!,
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      SizedBox(width: 8),
+                                      Icon(IconsaxPlusLinear.star_1,
+                                          color: Theme.of(context).primaryColor,
+                                          size: 16),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        '4.5',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Icon(
                                 IconsaxPlusLinear.heart,
                                 color: Theme.of(context).primaryColor,
                                 size: 24,
                               ),
-                            ],
-                          ),
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -378,7 +371,7 @@ class HomeView extends GetView<HomeController> {
                             decoration: BoxDecoration(
                               color: controller.selectedCategoryIndex == index
                                   ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context).colorScheme.secondary,
+                                  : Theme.of(context).colorScheme.tertiary,
                               borderRadius: BorderRadius.circular(100),
                             ),
                             child: Center(
@@ -412,93 +405,90 @@ class HomeView extends GetView<HomeController> {
                 itemCount: 10,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {},
-                    child: Container(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.PROFILE_DETAILS);
+                    },
+                    child: Card(
                       margin: EdgeInsets.only(bottom: 12),
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade100,
-                            spreadRadius: 3,
-                            blurRadius: 6,
-                            offset: Offset(0, 0), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Image.asset(
-                              'assets/image/photo.jpg',
-                              width: 80,
-                              height: 80,
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.asset(
+                                'assets/image/photo.jpg',
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit
+                                    .cover, // Rasmlar moslashuvchan bo'lishi uchun
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    width: 80,
+                                    height: 80,
+                                    color: Colors.grey[300],
+                                    child: Icon(Icons.error),
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Bella Curls',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(
-                                        fontWeight: FontWeight.bold,
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Bella Curls',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    '35 London Road',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium!,
+                                  ),
+                                  SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      Icon(IconsaxPlusBold.location,
+                                          color: Theme.of(context).primaryColor,
+                                          size: 16),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        '1.2 km',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!,
                                       ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  '35 London Road',
-                                  style:
-                                      Theme.of(context).textTheme.bodyMedium!,
-                                ),
-                                SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    Icon(IconsaxPlusBold.location,
-                                        color: Theme.of(context).primaryColor,
-                                        size: 16),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      '1.2 km',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!,
-                                    ),
-                                    SizedBox(width: 8),
-                                    Icon(IconsaxPlusLinear.star_1,
-                                        color: Theme.of(context).primaryColor,
-                                        size: 16),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      '4.5',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!,
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      SizedBox(width: 8),
+                                      Icon(IconsaxPlusLinear.star_1,
+                                          color: Theme.of(context).primaryColor,
+                                          size: 16),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        '4.5',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Icon(
                                 IconsaxPlusLinear.heart,
                                 color: Theme.of(context).primaryColor,
                                 size: 24,
                               ),
-                            ],
-                          ),
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

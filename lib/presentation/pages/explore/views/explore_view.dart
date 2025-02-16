@@ -13,7 +13,10 @@ class ExploreView extends GetView<ExploreController> {
         title: Text('Explore'),
       ),
       body: Center(
-        child: Text('Explore Screen '),
+        child: ElevatedButton(
+          onPressed: () {},
+          child: Text('Go to Favorites'),
+        ),
       ),
     );
   }
