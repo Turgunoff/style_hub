@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:style_hub/presentation/controllers/home_controller.dart';
@@ -47,7 +48,7 @@ class HomeView extends GetView<HomeController> {
               ),
               child: TextField(
                 onTap: () {
-                  // Get.toNamed('/search'); // Search sahifasiga yo‘naltirish
+                  // Get.toNamed('/search'); // Search sahifasiga yo'naltirish
                 },
                 decoration: InputDecoration(
                   hintText: 'Search',
@@ -76,20 +77,31 @@ class HomeView extends GetView<HomeController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Text('Services',
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          )),
+                ],
+              ),
+            ),
+            SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   Column(
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .tertiary, // ✅ LightTheme dagi rang
+                          color: Color(0xFFFADBEC),
                           borderRadius: BorderRadius.circular(100),
                         ),
                         padding: EdgeInsets.all(20),
-                        child: Icon(
-                          IconsaxPlusLinear.home,
-                          size: 30,
-                          color: Theme.of(context).colorScheme.primary,
+                        child: SvgPicture.asset(
+                          'assets/image/qaychi.svg',
+                          width: 20,
+                          height: 20,
                         ),
                       ),
                       SizedBox(height: 8),
@@ -103,14 +115,14 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: Color(0xFFEDDBFF),
                           borderRadius: BorderRadius.circular(100),
                         ),
                         padding: EdgeInsets.all(20),
-                        child: Icon(
-                          IconsaxPlusLinear.home,
-                          size: 30,
-                          color: Theme.of(context).colorScheme.primary,
+                        child: SvgPicture.asset(
+                          'assets/image/makeup.svg',
+                          width: 20,
+                          height: 20,
                         ),
                       ),
                       SizedBox(height: 8),
@@ -124,14 +136,14 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: Color(0xFFCAE0FD),
                           borderRadius: BorderRadius.circular(100),
                         ),
                         padding: EdgeInsets.all(20),
-                        child: Icon(
-                          IconsaxPlusLinear.home,
-                          size: 30,
-                          color: Theme.of(context).colorScheme.primary,
+                        child: SvgPicture.asset(
+                          'assets/image/manikure.svg',
+                          width: 20,
+                          height: 20,
                         ),
                       ),
                       SizedBox(height: 8),
@@ -145,14 +157,14 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: Color(0xFFCEFCDC),
                           borderRadius: BorderRadius.circular(100),
                         ),
                         padding: EdgeInsets.all(20),
-                        child: Icon(
-                          IconsaxPlusLinear.home,
-                          size: 30,
-                          color: Theme.of(context).colorScheme.primary,
+                        child: SvgPicture.asset(
+                          'assets/image/massage.svg',
+                          width: 20,
+                          height: 20,
                         ),
                       ),
                       SizedBox(height: 8),
