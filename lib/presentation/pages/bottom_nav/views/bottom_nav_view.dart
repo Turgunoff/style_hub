@@ -31,7 +31,7 @@ class BottomNavView extends GetView<BottomNavController> {
             onTap: controller.changePage,
             type: BottomNavigationBarType.fixed,
             elevation: 0,
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             selectedItemColor: Theme.of(context).colorScheme.primary,
             unselectedItemColor: Colors.grey,
             selectedLabelStyle: const TextStyle(

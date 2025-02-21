@@ -100,7 +100,7 @@ class BookingCard extends StatelessWidget {
   final String imageUrl;
 
   const BookingCard({
-    Key? key,
+    super.key,
     required this.salonName,
     required this.salonAddress,
     required this.date,
@@ -108,7 +108,7 @@ class BookingCard extends StatelessWidget {
     required this.services,
     required this.status,
     required this.imageUrl,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

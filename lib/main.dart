@@ -105,7 +105,7 @@ class MyApp extends StatelessWidget {
 }
 
 class ErrorApp extends StatelessWidget {
-  const ErrorApp({Key? key}) : super(key: key);
+  const ErrorApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +124,7 @@ class ErrorApp extends StatelessWidget {
 }
 
 class NotFoundPage extends StatelessWidget {
-  const NotFoundPage({Key? key}) : super(key: key);
+  const NotFoundPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ import 'package:style_hub/presentation/controllers/onboarding_controller.dart';
 import 'package:style_hub/presentation/routes/app_routes.dart';
 
 class OnboardingPage extends GetView<OnboardingController> {
-  OnboardingPage({Key? key}) : super(key: key);
+  OnboardingPage({super.key});
 
   final List<Widget> pages = [
     _buildPage(

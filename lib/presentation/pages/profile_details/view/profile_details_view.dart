@@ -219,34 +219,34 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {},
-                          child: Text('About us'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 Theme.of(context).colorScheme.primary,
                             foregroundColor: Colors.white,
                           ),
+                          child: Text('About us'),
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: OutlinedButton(
                           onPressed: () {},
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor:
+                                Theme.of(context).colorScheme.primary,
+                          ),
                           child: Text('Services'),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor:
-                                Theme.of(context).colorScheme.primary,
-                          ),
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: OutlinedButton(
                           onPressed: () {},
-                          child: Text('Package'),
                           style: OutlinedButton.styleFrom(
                             foregroundColor:
                                 Theme.of(context).colorScheme.primary,
                           ),
+                          child: Text('Package'),
                         ),
                       ),
                     ],
@@ -333,12 +333,12 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
         padding: const EdgeInsets.all(16),
         child: ElevatedButton(
           onPressed: () {},
-          child: Text('Book Now'),
           style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.primary,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 16),
           ),
+          child: Text('Book Now'),
         ),
       ),
     );

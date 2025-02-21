@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../../controllers/explore_controller.dart';
 
 class ExploreView extends GetView<ExploreController> {
-  const ExploreView({Key? key}) : super(key: key);
+  const ExploreView({super.key});
 
   @override
   Widget build(BuildContext context) {
