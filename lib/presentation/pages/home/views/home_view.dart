@@ -93,11 +93,13 @@ class HomeView extends GetView<HomeController> {
                   Column(
                     children: [
                       Container(
+                        height: 64,
+                        width: 64,
+                        padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           color: Color(0xFFFADBEC),
                           borderRadius: BorderRadius.circular(100),
                         ),
-                        padding: EdgeInsets.all(20),
                         child: SvgPicture.asset(
                           'assets/image/qaychi.svg',
                           width: 20,
@@ -106,7 +108,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Home',
+                        'Haircuts',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ],
@@ -114,11 +116,13 @@ class HomeView extends GetView<HomeController> {
                   Column(
                     children: [
                       Container(
+                        height: 64,
+                        width: 64,
+                        padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           color: Color(0xFFEDDBFF),
                           borderRadius: BorderRadius.circular(100),
                         ),
-                        padding: EdgeInsets.all(20),
                         child: SvgPicture.asset(
                           'assets/image/makeup.svg',
                           width: 20,
@@ -127,7 +131,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Home',
+                        'Makeup',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ],
@@ -135,11 +139,13 @@ class HomeView extends GetView<HomeController> {
                   Column(
                     children: [
                       Container(
+                        height: 64,
+                        width: 64,
+                        padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           color: Color(0xFFCAE0FD),
                           borderRadius: BorderRadius.circular(100),
                         ),
-                        padding: EdgeInsets.all(20),
                         child: SvgPicture.asset(
                           'assets/image/manikure.svg',
                           width: 20,
@@ -148,7 +154,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Home',
+                        'Manicure',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ],
@@ -156,11 +162,13 @@ class HomeView extends GetView<HomeController> {
                   Column(
                     children: [
                       Container(
+                        height: 64,
+                        width: 64,
+                        padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           color: Color(0xFFCEFCDC),
                           borderRadius: BorderRadius.circular(100),
                         ),
-                        padding: EdgeInsets.all(20),
                         child: SvgPicture.asset(
                           'assets/image/massage.svg',
                           width: 20,
@@ -169,7 +177,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Home',
+                        'Massage',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ],
@@ -183,7 +191,7 @@ class HomeView extends GetView<HomeController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Nearby Your Location',
+                  Text('Just for You',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                           )),
@@ -200,15 +208,18 @@ class HomeView extends GetView<HomeController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SizedBox(
-                height: 40,
+                height: 200,
                 child: Obx(() => ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.categories.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
+                          
                           onTap: () =>
                               controller.setSelectedCategoryIndex(index),
                           child: Container(
+                            width: 200,
+                            height: 200,
                             margin: const EdgeInsets.only(right: 8),
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             decoration: BoxDecoration(
