@@ -74,7 +74,6 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.system,
 
-      // Til sozlamalari
       translations: AppLocalization(),
       locale: const Locale('uz', 'UZ'), // Boshlang'ich til
       fallbackLocale: const Locale('en', 'US'), // Zaxira til
