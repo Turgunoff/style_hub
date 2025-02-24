@@ -69,7 +69,6 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
 
-      // Tema sozlamalari
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.system,
