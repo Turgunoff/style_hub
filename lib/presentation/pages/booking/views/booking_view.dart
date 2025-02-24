@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax_plus/iconsax_plus.dart';
 import '../../../controllers/booking_controller.dart';
 
 class BookingView extends GetView<BookingController> {
@@ -100,7 +99,7 @@ class BookingCard extends StatelessWidget {
   final String imageUrl;
 
   const BookingCard({
-    Key? key,
+    super.key,
     required this.salonName,
     required this.salonAddress,
     required this.date,
@@ -108,7 +107,7 @@ class BookingCard extends StatelessWidget {
     required this.services,
     required this.status,
     required this.imageUrl,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

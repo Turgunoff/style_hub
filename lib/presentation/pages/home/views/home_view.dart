@@ -44,7 +44,7 @@ class HomeView extends GetView<HomeController> {
                 borderRadius: BorderRadius.circular(16),
                 color: Theme.of(context)
                     .colorScheme
-                    .surfaceVariant, // Light & Dark mode uchun
+                    .surfaceContainerHighest, // Light & Dark mode uchun
               ),
               child: TextField(
                 onTap: () {
@@ -63,7 +63,8 @@ class HomeView extends GetView<HomeController> {
                   suffixIcon: Icon(IconsaxPlusLinear.setting_4,
                       color: Theme.of(context).primaryColor),
                   filled: true,
-                  fillColor: Theme.of(context).colorScheme.surfaceVariant,
+                  fillColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
                   hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         color: Theme.of(context).hintColor, // Hint matni rangi
                       ),
