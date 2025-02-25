@@ -1,9 +1,9 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:style_hub/presentation/controllers/home_controller.dart';
+import 'package:flutter_carousel_slider/carousel_slider.dart';
 
 import '../../../routes/app_routes.dart';
 
@@ -77,35 +77,62 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             SizedBox(height: 16),
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 200,
-                viewportFraction: 0.9,
-                autoPlay: true,
-              ),
-              items: [
-                _buildCarouselItem(
-                  context,
-                  'assets/image/discount1.jpg',
-                  '30% OFF Today\'s Special',
-                  () {
-                    // Book now action
-                  },
+            Container(
+              height: 200,
+              child: CarouselSlider(
+                slideTransform: DefaultTransform(),
+                enableAutoSlider: true,
+                unlimitedMode: true,
+                slideIndicator: CircularSlideIndicator(
+                  currentIndicatorColor: Theme.of(context).colorScheme.primary,
+                  indicatorBackgroundColor: Colors.grey.withOpacity(0.3),
+                  indicatorRadius: 5,
+                  itemSpacing: 12,
+                  indicatorBorderWidth: 0,
+                  indicatorBorderColor: Colors.transparent,
+                  padding: EdgeInsets.only(bottom: 16),
                 ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                autoSliderDelay: Duration(seconds: 5),
                 children: [
-                  Text('Services',
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          )),
+                  _buildCarouselItem(
+                    context,
+                    'assets/image/makeup.png',
+                    '30% OFF Today\'s Special',
+                    () {
+                      // Book now action
+                    },
+                  ),
+                  _buildCarouselItem(
+                    context,
+                    'assets/image/manikiyur.png',
+                    '30% OFF Today\'s Special',
+                    () {
+                      // Book now action
+                    },
+                  ),
+                  _buildCarouselItem(
+                    context,
+                    'assets/image/manikiyur.png',
+                    '30% OFF Today\'s Special',
+                    () {
+                      // Book now action
+                    },
+                  ),
                 ],
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Text('Services',
+            //           style: Theme.of(context).textTheme.titleLarge!.copyWith(
+            //                 fontWeight: FontWeight.bold,
+            //               )),
+            //     ],
+            //   ),
+            // ),
             SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -540,24 +567,6 @@ class HomeView extends GetView<HomeController> {
                   );
                 },
               ),
-            ),
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 200,
-                viewportFraction: 0.9,
-                autoPlay: true,
-              ),
-              items: [
-                _buildCarouselItem(
-                  context,
-                  'assets/image/discount1.jpg',
-                  '30% OFF Today\'s Special',
-                  () {
-                    // Book now action
-                  },
-                ),
-                // Add more carousel items...
-              ],
             ),
           ],
         ),
