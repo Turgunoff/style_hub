@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -18,10 +19,13 @@ class HomeView extends GetView<HomeController> {
         ),
         actions: [
           IconButton(
-            icon: Icon(
-              IconsaxPlusLinear.notification,
-              size: 24,
-            ),
+            icon: Icon(IconsaxPlusLinear.message),
+            onPressed: () {
+              // Navigate to messages screen
+            },
+          ),
+          IconButton(
+            icon: Icon(IconsaxPlusLinear.notification),
             onPressed: () {
               // Get.to(SearchView());
             },
@@ -73,6 +77,23 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             SizedBox(height: 16),
+            CarouselSlider(
+              options: CarouselOptions(
+                height: 200,
+                viewportFraction: 0.9,
+                autoPlay: true,
+              ),
+              items: [
+                _buildCarouselItem(
+                  context,
+                  'assets/image/discount1.jpg',
+                  '30% OFF Today\'s Special',
+                  () {
+                    // Book now action
+                  },
+                ),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
@@ -209,36 +230,37 @@ class HomeView extends GetView<HomeController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SizedBox(
-                height: 200,
-                child: Obx(() => ListView.builder(
+                height: 40,
+                child: GetBuilder<HomeController>(
+                  init: HomeController(),
+                  initState: (_) {},
+                  builder: (_) {
+                    return ListView.builder(
+                      // physics: NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.horizontal,
-                      itemCount: controller.categories.length,
+                      itemCount: 22,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          
-                          onTap: () =>
-                              controller.setSelectedCategoryIndex(index),
+                          onTap: () {
+                            controller.setSelectedCategoryIndex(index);
+                          },
                           child: Container(
-                            width: 200,
-                            height: 200,
-                            margin: const EdgeInsets.only(right: 8),
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            margin: EdgeInsets.only(right: 8),
+                            padding: EdgeInsets.symmetric(horizontal: 20),
                             decoration: BoxDecoration(
-                              color: controller.selectedCategoryIndex.value ==
-                                      index
+                              color: controller.selectedCategoryIndex == index
                                   ? Theme.of(context).colorScheme.primary
                                   : Theme.of(context).colorScheme.tertiary,
                               borderRadius: BorderRadius.circular(100),
                             ),
                             child: Center(
                               child: Text(
-                                controller.categories[index],
+                                'Item ${index * 999}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyLarge!
                                     .copyWith(
-                                      color: controller.selectedCategoryIndex
-                                                  .value ==
+                                      color: controller.selectedCategoryIndex ==
                                               index
                                           ? Colors.white
                                           : Theme.of(context).primaryColor,
@@ -248,7 +270,9 @@ class HomeView extends GetView<HomeController> {
                           ),
                         );
                       },
-                    )),
+                    );
+                  },
+                ),
               ),
             ),
             SizedBox(
@@ -517,7 +541,59 @@ class HomeView extends GetView<HomeController> {
                 },
               ),
             ),
+            CarouselSlider(
+              options: CarouselOptions(
+                height: 200,
+                viewportFraction: 0.9,
+                autoPlay: true,
+              ),
+              items: [
+                _buildCarouselItem(
+                  context,
+                  'assets/image/discount1.jpg',
+                  '30% OFF Today\'s Special',
+                  () {
+                    // Book now action
+                  },
+                ),
+                // Add more carousel items...
+              ],
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCarouselItem(
+    BuildContext context,
+    String imagePath,
+    String text,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          image: DecorationImage(
+            image: AssetImage(imagePath),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.3),
+              BlendMode.darken,
+            ),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
         ),
       ),
     );
