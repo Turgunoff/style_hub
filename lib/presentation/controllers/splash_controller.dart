@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
 import '../routes/app_routes.dart';
 
 class SplashController extends GetxController {
@@ -8,29 +7,28 @@ class SplashController extends GetxController {
 
   @override
   void onInit() {
+    print('SplashController onInit called'); // Konsolda chiqishi kerak
     super.onInit();
     _checkFirstLaunch();
   }
 
   Future<void> _checkFirstLaunch() async {
     try {
-      // 3 sekund kutish
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 2));
 
-      // GetStorage dan qiymatni o'qish
       final isFirstLaunch = _storage.read<bool>('isFirstLaunch') ?? true;
+      print('isFirstLaunch: $isFirstLaunch'); // Qo‘shilgan print
 
       if (isFirstLaunch) {
-        // Birinchi marta ochilganda
         await _storage.write('isFirstLaunch', false);
+        print('Navigating to ONBOARDING...');
         Get.offAllNamed(AppRoutes.ONBOARDING);
       } else {
-        // Keyingi ochilishlarda
+        print('Navigating to BOTTOM_NAV...');
         Get.offAllNamed(AppRoutes.BOTTOM_NAV);
       }
     } catch (e) {
       print('Error in _checkFirstLaunch: $e');
-      // Xatolik yuz berganda ham asosiy sahifaga o'tish
       Get.offAllNamed(AppRoutes.BOTTOM_NAV);
     }
   }

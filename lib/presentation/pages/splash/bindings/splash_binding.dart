@@ -6,7 +6,7 @@ import '../../../controllers/splash_controller.dart';
 class SplashBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<GetStorage>(() => GetStorage()); // Lazy initialization
-    Get.lazyPut<SplashController>(() => SplashController());
+    Get.put(GetStorage()); // Lazy bo‘lmagan versiyasi
+    Get.put(SplashController()); // Lazy emas, to‘g‘ri ishlaydi
   }
 }
