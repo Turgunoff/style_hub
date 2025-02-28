@@ -52,6 +52,7 @@ Future<void> main() async {
 }
 
 Future<void> initServices() async {
+  
   // Servislarni ishga tushirish
   await Get.putAsync(() => SecureStorage().init());
   await Get.putAsync(() => ConnectivityService().init());
