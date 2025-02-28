@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:style_hub/presentation/controllers/home_controller.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../routes/app_routes.dart';
 
@@ -79,47 +80,56 @@ class HomeView extends GetView<HomeController> {
             SizedBox(height: 16),
             Container(
               height: 200,
-              child: CarouselSlider(
-                slideTransform: DefaultTransform(),
-                enableAutoSlider: true,
-                unlimitedMode: true,
-                slideIndicator: CircularSlideIndicator(
-                  currentIndicatorColor: Theme.of(context).colorScheme.primary,
-                  indicatorBackgroundColor: Colors.grey.withOpacity(0.3),
-                  indicatorRadius: 5,
-                  itemSpacing: 12,
-                  indicatorBorderWidth: 0,
-                  indicatorBorderColor: Colors.transparent,
-                  padding: EdgeInsets.only(bottom: 16),
-                ),
-                autoSliderDelay: Duration(seconds: 5),
-                children: [
-                  _buildCarouselItem(
-                    context,
-                    'assets/image/makeup.png',
-                    '30% OFF Today\'s Special',
-                    () {
-                      // Book now action
-                    },
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                if (controller.error.value.isNotEmpty) {
+                  return Center(
+                    child: Text(
+                      controller.error.value,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  );
+                }
+
+                if (controller.banners.isEmpty) {
+                  return Center(
+                    child: Text('No banners available'),
+                  );
+                }
+
+                return CarouselSlider(
+                  slideTransform: DefaultTransform(),
+                  enableAutoSlider: true,
+                  unlimitedMode: true,
+                  slideIndicator: CircularSlideIndicator(
+                    currentIndicatorColor:
+                        Theme.of(context).colorScheme.primary,
+                    indicatorBackgroundColor: Colors.grey.withOpacity(0.3),
+                    indicatorRadius: 5,
+                    itemSpacing: 12,
+                    indicatorBorderWidth: 0,
+                    indicatorBorderColor: Colors.transparent,
+                    padding: EdgeInsets.only(bottom: 16),
                   ),
-                  _buildCarouselItem(
-                    context,
-                    'assets/image/manikiyur.png',
-                    '30% OFF Today\'s Special',
-                    () {
-                      // Book now action
-                    },
-                  ),
-                  _buildCarouselItem(
-                    context,
-                    'assets/image/manikiyur.png',
-                    '30% OFF Today\'s Special',
-                    () {
-                      // Book now action
-                    },
-                  ),
-                ],
-              ),
+                  autoSliderDelay: Duration(seconds: 5),
+                  children: controller.banners
+                      .where((banner) => banner.isActive)
+                      .map((banner) => _buildCarouselItem(
+                            context,
+                            banner,
+                            () {
+                              if (banner.linkUrl != null) {
+                                // Handle banner tap
+                                // Get.toNamed(banner.linkUrl);
+                              }
+                            },
+                          ))
+                      .toList(),
+                );
+              }),
             ),
             // Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -576,8 +586,7 @@ class HomeView extends GetView<HomeController> {
 
   Widget _buildCarouselItem(
     BuildContext context,
-    String imagePath,
-    String text,
+    BannerModel banner,
     VoidCallback onTap,
   ) {
     return GestureDetector(
@@ -586,23 +595,65 @@ class HomeView extends GetView<HomeController> {
         margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          image: DecorationImage(
-            image: AssetImage(imagePath),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.3),
-              BlendMode.darken,
-            ),
-          ),
         ),
-        child: Center(
-          child: Text(
-            text,
-            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: CachedNetworkImage(
+                imageUrl: banner.imageUrl ?? '',
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(),
                 ),
-          ),
+                errorWidget: (context, url, error) => Container(
+                  color: Colors.grey[300],
+                  child: Icon(Icons.error),
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withOpacity(0.7),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    banner.title,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  if (banner.description != null) ...[
+                    SizedBox(height: 4),
+                    Text(
+                      banner.description!,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Colors.white,
+                          ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

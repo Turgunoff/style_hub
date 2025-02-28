@@ -43,6 +43,8 @@ dependencies:
   share_plus: ^7.2.1
   flutter_svg: ^2.0.17
   flutter_carousel_slider: ^1.1.0
+  cached_network_image: ^3.3.1
+  dio: ^5.4.1
 
 dev_dependencies:
   flutter_test:
