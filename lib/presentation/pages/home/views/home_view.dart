@@ -5,6 +5,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:style_hub/presentation/controllers/home_controller.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../routes/app_routes.dart';
 
@@ -82,7 +83,17 @@ class HomeView extends GetView<HomeController> {
               height: 200,
               child: Obx(() {
                 if (controller.isLoading.value) {
-                  return Center(child: CircularProgressIndicator());
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  );
                 }
 
                 if (controller.error.value.isNotEmpty) {
@@ -121,10 +132,10 @@ class HomeView extends GetView<HomeController> {
                             context,
                             banner,
                             () {
-                              // if (banner.linkUrl != null) {
-                              //   // Handle banner tap
-                              //   // Get.toNamed(banner.linkUrl);
-                              // }
+                              if (banner.linkUrl != null) {
+                                // Handle banner tap
+                                Get.toNamed(banner.linkUrl!);
+                              }
                             },
                           ))
                       .toList(),
@@ -146,103 +157,132 @@ class HomeView extends GetView<HomeController> {
             SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        height: 64,
-                        width: 64,
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFFADBEC),
-                          borderRadius: BorderRadius.circular(100),
+              child: Obx(() {
+                if (controller.isCategoriesLoading.value) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(4, (index) {
+                      return Column(
+                        children: [
+                          Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              height: 64,
+                              width: 64,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              height: 12,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
+                  );
+                }
+
+                if (controller.categoriesError.value.isNotEmpty) {
+                  return Center(
+                    child: Text(
+                      controller.categoriesError.value,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  );
+                }
+
+                if (controller.topCategories.isEmpty) {
+                  return Center(
+                    child: Text('Kategoriyalar mavjud emas'),
+                  );
+                }
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: controller.topCategories.map((category) {
+                    // Har bir kategoriya uchun unikal rang tanlash
+                    Color categoryColor;
+                    switch (controller.topCategories.indexOf(category) % 4) {
+                      case 0:
+                        categoryColor = Color(0xFFFADBEC); // Pushti
+                        break;
+                      case 1:
+                        categoryColor = Color(0xFFEDDBFF); // Och binafsha
+                        break;
+                      case 2:
+                        categoryColor = Color(0xFFCAE0FD); // Och ko'k
+                        break;
+                      case 3:
+                        categoryColor = Color(0xFFCEFCDC); // Och yashil
+                        break;
+                      default:
+                        categoryColor = Color(0xFFFADBEC);
+                    }
+
+                    return Column(
+                      children: [
+                        Container(
+                          height: 64,
+                          width: 64,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: categoryColor,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: category.imageUrl.startsWith('http')
+                              ? CachedNetworkImage(
+                                  imageUrl: category.imageUrl,
+                                  width: 32,
+                                  height: 32,
+                                  fit: BoxFit.contain,
+                                  placeholder: (context, url) => Icon(
+                                    IconsaxPlusLinear.scissor,
+                                    size: 24,
+                                    color: Colors.grey,
+                                  ),
+                                  errorWidget: (context, url, error) => Icon(
+                                    IconsaxPlusLinear.scissor,
+                                    size: 24,
+                                  ),
+                                )
+                              : SvgPicture.asset(
+                                  'assets/image/qaychi.svg',
+                                  width: 32,
+                                  height: 32,
+                                ),
                         ),
-                        child: SvgPicture.asset(
-                          'assets/image/qaychi.svg',
-                          width: 20,
-                          height: 20,
+                        SizedBox(height: 8),
+                        SizedBox(
+                          width: 70,
+                          child: Builder(builder: (context) {
+                            final words = category.name.split(' ');
+                            return Text(
+                              category.name,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              textAlign: TextAlign.center,
+                              maxLines: words.length > 1 ? 2 : 1,
+                              overflow: TextOverflow.ellipsis,
+                            );
+                          }),
                         ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Haircuts',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        height: 64,
-                        width: 64,
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFEDDBFF),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: SvgPicture.asset(
-                          'assets/image/makeup.svg',
-                          width: 20,
-                          height: 20,
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Makeup',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        height: 64,
-                        width: 64,
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFCAE0FD),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: SvgPicture.asset(
-                          'assets/image/manikure.svg',
-                          width: 20,
-                          height: 20,
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Manicure',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        height: 64,
-                        width: 64,
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFCEFCDC),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: SvgPicture.asset(
-                          'assets/image/massage.svg',
-                          width: 20,
-                          height: 20,
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Massage',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                      ],
+                    );
+                  }).toList(),
+                );
+              }),
             ),
             SizedBox(height: 16),
             Padding(
@@ -604,8 +644,12 @@ class HomeView extends GetView<HomeController> {
               child: CachedNetworkImage(
                 imageUrl: banner.imageUrl ?? '',
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(),
+                placeholder: (context, url) => Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    color: Colors.white,
+                  ),
                 ),
                 errorWidget: (context, url, error) => Container(
                   color: Colors.grey[300],
