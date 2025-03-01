@@ -78,7 +78,7 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             SizedBox(height: 16),
-            Container(
+            SizedBox(
               height: 200,
               child: Obx(() {
                 if (controller.isLoading.value) {
@@ -121,10 +121,10 @@ class HomeView extends GetView<HomeController> {
                             context,
                             banner,
                             () {
-                              if (banner.linkUrl != null) {
-                                // Handle banner tap
-                                // Get.toNamed(banner.linkUrl);
-                              }
+                              // if (banner.linkUrl != null) {
+                              //   // Handle banner tap
+                              //   // Get.toNamed(banner.linkUrl);
+                              // }
                             },
                           ))
                       .toList(),
@@ -613,46 +613,19 @@ class HomeView extends GetView<HomeController> {
                 ),
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withOpacity(0.7),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    banner.title,
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  if (banner.description != null) ...[
-                    SizedBox(height: 4),
-                    Text(
-                      banner.description!,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Colors.white,
-                          ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ],
-              ),
-            ),
+            // Container(
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(16),
+            //     gradient: LinearGradient(
+            //       begin: Alignment.topCenter,
+            //       end: Alignment.bottomCenter,
+            //       colors: [
+            //         Colors.transparent,
+            //         Colors.black.withOpacity(0.7),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

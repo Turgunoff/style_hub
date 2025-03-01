@@ -9,20 +9,14 @@ class BannerModel {
   final DateTime? startDate;
   final DateTime? endDate;
   final bool isActive;
-  final String? linkUrl;
-  final String title;
   final String? imageUrl;
-  final String? description;
 
   BannerModel({
     required this.id,
     this.startDate,
     this.endDate,
     required this.isActive,
-    this.linkUrl,
-    required this.title,
     this.imageUrl,
-    this.description,
   });
 
   factory BannerModel.fromJson(Map<String, dynamic> json) {
@@ -34,10 +28,7 @@ class BannerModel {
       endDate:
           json['end_date'] != null ? DateTime.parse(json['end_date']) : null,
       isActive: json['is_active'],
-      linkUrl: json['link_url'],
-      title: json['title'],
       imageUrl: json['image_url'],
-      description: json['description'],
     );
   }
 }
@@ -78,7 +69,6 @@ class HomeController extends GetxController {
       isLoading.value = true;
       error.value = '';
 
-      // Android emulator uchun 10.0.2.2 ishlatamiz
       final response = await dio.get('${ApiConfig.baseUrl}/banners/');
 
       if (response.statusCode == 200) {
