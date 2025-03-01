@@ -2,22 +2,50 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are currently being supported with security updates.
+Style Hub ilovasining quyidagi versiyalari xavfsizlik yangilanishlari bilan qo'llab-quvvatlanadi:
 
-| Version | Supported          | Support Duration         |
-| ------- | ------------------ | ------------------------ |
-| 5.1.x   | :white_check_mark: | Until next major release |
-| 5.0.x   | :x:                | No longer supported      |
-| 4.0.x   | :white_check_mark: | Until 2024-12-31         |
-| < 4.0   | :x:                | No longer supported      |
+| Version | Supported          | Support Duration            |
+| ------- | ------------------ | --------------------------- |
+| 1.2.x   | :white_check_mark: | Keyingi asosiy versiyagacha |
+| 1.1.x   | :white_check_mark: | 2024-12-31 gacha            |
+| 1.0.x   | :x:                | Qo'llab-quvvatlanmaydi      |
+| < 1.0   | :x:                | Qo'llab-quvvatlanmaydi      |
 
 ## Reporting a Vulnerability
 
-To report a vulnerability, please follow these steps:
+Xavfsizlik zaifliklarini xabar qilish uchun quyidagi qadamlarni bajaring:
 
-1. **Contact**: Send an email to [eldor.turgunov.94@yandex.com](mailto:eldor.turgunov.94@yandex.com) with a detailed description of the vulnerability.
-2. **Response Time**: You can expect an acknowledgment of your report within 48 hours.
-3. **Investigation**: Our team will investigate the reported vulnerability and will provide updates on the status within 7 days.
-4. **Outcome**: If the vulnerability is accepted, we will work on a fix and notify you when it is released. If declined, we will provide an explanation.
+1. **Contact**: [eldor.turgunov.94@yandex.com](mailto:eldor.turgunov.94@yandex.com) elektron pochta manziliga zaiflik haqida batafsil ma'lumot yuboring:
 
-Thank you for helping us keep our project secure!
+   - Zaiflik tavsifi
+   - Zaiflikni qayta ishlab chiqarish qadamlari
+   - Mumkin bo'lgan ta'siri
+   - Agar mavjud bo'lsa, taklif qilingan yechim
+
+2. **Response Time**: Xabaringiz 48 soat ichida tasdiqlanadi.
+
+3. **Investigation**: Jamoamiz xabar qilingan zaiflikni tekshiradi va 7 kun ichida holati haqida yangilanishlar taqdim etadi.
+
+4. **Outcome**:
+   - Zaiflik tasdiqlansa, biz tuzatish ustida ishlaymiz va u chiqarilganda sizni xabardor qilamiz.
+   - Agar zaiflik rad etilsa, biz buning sababini tushuntiramiz.
+   - Tuzatish chiqarilganda, biz sizni xabardor qilamiz va xavfsizlik bildirishnomasida hissa qo'shganingizni tan olamiz (agar xohlasangiz).
+
+## Xavfsizlik Yangilanishlari
+
+Xavfsizlik yangilanishlari quyidagi kanallar orqali e'lon qilinadi:
+
+- GitHub Releases sahifasida
+- Ilovaning "Yangilanishlar" bo'limida
+- Muhim yangilanishlar uchun foydalanuvchilarga push-bildirishnomalar orqali
+
+## Xavfsizlik Amaliyotlari
+
+Style Hub quyidagi xavfsizlik amaliyotlarini qo'llaydi:
+
+- Barcha foydalanuvchi ma'lumotlari shifrlangan holda saqlanadi
+- Autentifikatsiya uchun zamonaviy va xavfsiz usullar qo'llaniladi
+- Muntazam xavfsizlik auditi o'tkaziladi
+- Uchinchi tomon kutubxonalari muntazam yangilanib turiladi
+
+Loyihamizni xavfsiz saqlashga yordam berganingiz uchun tashakkur!
