@@ -14,9 +14,9 @@ class EnvConfig {
       case Environment.development:
         return 'http://159.223.43.76:7777/api/v1';
       case Environment.staging:
-        return 'https://staging-api.stylehub.com/api/v1';
+        return 'https://staging-api.looksy.com/api/v1';
       case Environment.production:
-        return 'https://api.stylehub.com/api/v1';
+        return 'https://api.looksy.com/api/v1';
     }
   }
 

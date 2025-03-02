@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:style_hub/presentation/controllers/onboarding_controller.dart';
-import 'package:style_hub/presentation/routes/app_routes.dart';
+import 'package:looksy/presentation/controllers/onboarding_controller.dart';
+import 'package:looksy/presentation/routes/app_routes.dart';
 
 class OnboardingPage extends GetView<OnboardingController> {
   OnboardingPage({super.key});

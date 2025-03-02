@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "uz.turgunoff" "\0"
-            VALUE "FileDescription", "style_hub" "\0"
+            VALUE "FileDescription", "looksy" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "style_hub" "\0"
+            VALUE "InternalName", "looksy" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 uz.turgunoff. All rights reserved." "\0"
-            VALUE "OriginalFilename", "style_hub.exe" "\0"
-            VALUE "ProductName", "style_hub" "\0"
+            VALUE "OriginalFilename", "looksy.exe" "\0"
+            VALUE "ProductName", "looksy" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:style_hub/presentation/controllers/home_controller.dart';
+import 'package:looksy/presentation/controllers/home_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class BarberList extends StatelessWidget {

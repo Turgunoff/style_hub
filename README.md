@@ -25,7 +25,7 @@ Style Hub - go'zallik va sog'lomlashtirish xizmatlarini taqdim etuvchi zamonaviy
 1. Flutter SDK o'rnatilganligiga ishonch hosil qiling
 2. Loyihani klonlang:
    ```
-   git clone https://github.com/username/style_hub.git
+   git clone https://github.com/username/looksy.git
    ```
 3. Kerakli paketlarni o'rnating:
    ```

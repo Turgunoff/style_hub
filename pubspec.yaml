@@ -1,5 +1,5 @@
-name: style_hub
-description: "Style Hub"
+name: looksy
+description: "Looksy - Barber booking app"
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1

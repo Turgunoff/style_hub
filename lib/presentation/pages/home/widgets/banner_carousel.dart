@@ -3,8 +3,8 @@ import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:style_hub/presentation/controllers/home_controller.dart';
-import 'package:style_hub/core/data/models.dart';
+import 'package:looksy/presentation/controllers/home_controller.dart';
+import 'package:looksy/core/data/models.dart';
 
 class BannerCarousel extends StatelessWidget {
   final HomeController controller;

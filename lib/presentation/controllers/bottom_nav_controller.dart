@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:style_hub/presentation/pages/explore/views/explore_view.dart';
+import 'package:looksy/presentation/pages/explore/views/explore_view.dart';
 
 import '../pages/booking/views/booking_view.dart';
 import '../pages/inbox/views/inbox_view.dart';

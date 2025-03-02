@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:style_hub/presentation/controllers/home_controller.dart';
-import 'package:style_hub/presentation/pages/home/widgets/banner_carousel.dart';
-import 'package:style_hub/presentation/pages/home/widgets/barber_list.dart';
-import 'package:style_hub/presentation/pages/home/widgets/category_tabs.dart';
-import 'package:style_hub/presentation/pages/home/widgets/search_bar_widget.dart';
-import 'package:style_hub/presentation/pages/home/widgets/shimmer_loading.dart';
-import 'package:style_hub/presentation/pages/home/widgets/top_categories.dart';
+import 'package:looksy/presentation/controllers/home_controller.dart';
+import 'package:looksy/presentation/pages/home/widgets/banner_carousel.dart';
+import 'package:looksy/presentation/pages/home/widgets/barber_list.dart';
+import 'package:looksy/presentation/pages/home/widgets/category_tabs.dart';
+import 'package:looksy/presentation/pages/home/widgets/search_bar_widget.dart';
+import 'package:looksy/presentation/pages/home/widgets/shimmer_loading.dart';
+import 'package:looksy/presentation/pages/home/widgets/top_categories.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -17,7 +17,7 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Style Hub',
+          'Looksy',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
