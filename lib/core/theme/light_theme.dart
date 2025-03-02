@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 final lightTheme = ThemeData(
   useMaterial3: true, // Material 3 dizaynidan foydalanish
+  fontFamily: GoogleFonts.manrope().fontFamily,
   colorScheme: const ColorScheme.light(
     primary: Color(0xFF3A3F92), // Asosiy rang (Royal Blue)
     background: Color(0xFFFFFFFF), // Orqa fon rangi (oq)
@@ -18,27 +20,84 @@ final lightTheme = ThemeData(
   scaffoldBackgroundColor: Color(0xFFF8F9FA), // Ilovaning umumiy backgroundi
 
   // AppBar uchun sozlamalar
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     backgroundColor: Color(0xFF3A3F92), // Asosiy rang
     foregroundColor: Colors.white, // Matn rangi
     iconTheme: IconThemeData(color: Colors.white), // Ikonlar oq rangda
+    titleTextStyle: GoogleFonts.manrope(
+      color: Colors.white,
+      fontSize: 20,
+      fontWeight: FontWeight.w600,
+    ),
   ),
 
   // Matnlar uchun ranglar
-  textTheme: const TextTheme(
-    bodyLarge: TextStyle(color: Colors.black),
-    bodyMedium: TextStyle(color: Colors.black),
-    displayLarge: TextStyle(color: Colors.black),
-    displayMedium: TextStyle(color: Colors.black),
-    displaySmall: TextStyle(color: Colors.black),
-    headlineMedium: TextStyle(color: Colors.black),
-    headlineSmall: TextStyle(color: Colors.black),
-    titleLarge: TextStyle(color: Colors.black),
-    titleMedium: TextStyle(
-        color: Color(0xFF1A237E)), // Dark Blue - yaxshi kontrast uchun
-    titleSmall: TextStyle(color: Colors.black),
-    labelLarge: TextStyle(color: Colors.black),
-    labelSmall: TextStyle(color: Colors.black),
+  textTheme: TextTheme(
+    bodyLarge: GoogleFonts.manrope(
+      color: Colors.black,
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+    ),
+    bodyMedium: GoogleFonts.manrope(
+      color: Colors.black,
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+    ),
+    displayLarge: GoogleFonts.manrope(
+      color: Colors.black,
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    ),
+    displayMedium: GoogleFonts.manrope(
+      color: Colors.black,
+      fontSize: 28,
+      fontWeight: FontWeight.bold,
+    ),
+    displaySmall: GoogleFonts.manrope(
+      color: Colors.black,
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+    ),
+    headlineLarge: GoogleFonts.manrope(
+      color: Colors.black,
+      fontSize: 28,
+      fontWeight: FontWeight.w700,
+    ),
+    headlineMedium: GoogleFonts.manrope(
+      color: Colors.black,
+      fontSize: 22,
+      fontWeight: FontWeight.w600,
+    ),
+    headlineSmall: GoogleFonts.manrope(
+      color: Colors.black,
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+    ),
+    titleLarge: GoogleFonts.manrope(
+      color: Colors.black,
+      fontSize: 20,
+      fontWeight: FontWeight.w600,
+    ),
+    titleMedium: GoogleFonts.manrope(
+      color: Color(0xFF1A237E),
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+    ),
+    titleSmall: GoogleFonts.manrope(
+      color: Colors.black,
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+    ),
+    labelLarge: GoogleFonts.manrope(
+      color: Colors.black,
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+    ),
+    labelSmall: GoogleFonts.manrope(
+      color: Colors.black,
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+    ),
   ),
 
   // Bottom Navigation Bar sozlamalari
@@ -55,6 +114,10 @@ final lightTheme = ThemeData(
       foregroundColor: Colors.white, // Oq matn
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 3,
+      textStyle: GoogleFonts.manrope(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
     ),
   ),
 
@@ -62,18 +125,34 @@ final lightTheme = ThemeData(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16), // TextField uchun radius
     ),
+    labelStyle: GoogleFonts.manrope(
+      color: Colors.grey[700],
+      fontSize: 16,
+    ),
+    hintStyle: GoogleFonts.manrope(
+      color: Colors.grey[400],
+      fontSize: 16,
+    ),
   ),
 
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       foregroundColor: Color(0xFFFF6B6B), // Ikkilamchi tugma rangi (Soft Coral)
+      textStyle: GoogleFonts.manrope(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
     ),
   ),
 
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       foregroundColor: Color(0xFF3A3F92), // Primary rangda ramka va matn
-      side: BorderSide(color: Color(0xFF3A3F92)), // Tugma atrofi chizig‘i
+      side: BorderSide(color: Color(0xFF3A3F92)), // Tugma atrofi chizig'i
+      textStyle: GoogleFonts.manrope(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
     ),
   ),
 

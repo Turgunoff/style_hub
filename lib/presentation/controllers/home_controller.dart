@@ -3,117 +3,47 @@
 import 'package:get/get.dart';
 import 'package:dio/dio.dart'; // Dio ni import qilamiz
 import '../../../core/config/api_config.dart';
-
-class BannerModel {
-  final int id;
-  final DateTime? startDate;
-  final DateTime? endDate;
-  final bool isActive;
-  final String? imageUrl;
-
-  BannerModel({
-    required this.id,
-    this.startDate,
-    this.endDate,
-    required this.isActive,
-    this.imageUrl,
-  });
-
-  factory BannerModel.fromJson(Map<String, dynamic> json) {
-    return BannerModel(
-      id: json['id'],
-      startDate: json['start_date'] != null
-          ? DateTime.parse(json['start_date'])
-          : null,
-      endDate:
-          json['end_date'] != null ? DateTime.parse(json['end_date']) : null,
-      isActive: json['is_active'],
-      imageUrl: json['image_url'],
-    );
-  }
-}
-
-class BarberModel {
-  final int id;
-  final String fullName;
-  final String phone;
-  final String email;
-  final String bio;
-  final int experience;
-  final double rating;
-  final int categoryId;
-  final String imageUrl;
-  final double distance;
-
-  BarberModel({
-    required this.id,
-    required this.fullName,
-    required this.phone,
-    required this.email,
-    required this.bio,
-    required this.experience,
-    required this.rating,
-    required this.categoryId,
-    required this.imageUrl,
-    this.distance = 0.0,
-  });
-
-  factory BarberModel.fromJson(Map<String, dynamic> json) {
-    return BarberModel(
-      id: json['id'],
-      fullName: json['full_name'] ?? 'Nomsiz barber',
-      phone: json['phone'] ?? '',
-      email: json['email'] ?? '',
-      bio: json['bio'] ?? '',
-      experience: json['experience'] ?? 0,
-      rating: (json['rating'] ?? 0.0).toDouble(),
-      categoryId: json['category_id'] ?? 0,
-      imageUrl: json['image_url'] ?? 'assets/image/photo.jpg',
-      distance: (json['distance'] ?? 0.0).toDouble(),
-    );
-  }
-}
-
-class CategoryModel {
-  final int id;
-  final DateTime createdAt;
-  final String name;
-  final String description;
-  final String imageUrl;
-  final int barbersCount; // Barberlar soni
-
-  CategoryModel({
-    required this.id,
-    required this.createdAt,
-    required this.name,
-    required this.description,
-    required this.imageUrl,
-    this.barbersCount = 0,
-  });
-
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    return CategoryModel(
-      id: json['id'],
-      createdAt: DateTime.parse(json['created_at']),
-      name: json['name'],
-      description: json['description'],
-      imageUrl: json['image_url'],
-      barbersCount: json['barbers_count'] ?? 0,
-    );
-  }
-}
+import '../../../core/data/models.dart'; // Modellarni import qilamiz
 
 class HomeController extends GetxController {
   final selectedCategoryIndex = 0.obs; // RxInt tipidagi observable
+  final previousCategoryIndex = 0.obs; // Avvalgi tanlangan kategoriya indeksi
   final categories = <CategoryModel>[].obs; // RxList tipidagi observable
   final topCategories =
       <CategoryModel>[].obs; // Eng ko'p barberli kategoriyalar
+
+  // Barcha kategoriyalar ro'yxatlari (filtrsiz)
+  final allCategories = <CategoryModel>[].obs; // Barcha kategoriyalar
+  final allCategoriesByBarberCount =
+      <CategoryModel>[].obs; // Barberlar soni bo'yicha
+  final allCategoriesById = <CategoryModel>[].obs; // ID bo'yicha
+
+  // Home ekrani uchun filtrlangan kategoriyalar (barber soni > 0)
+  final homeCategories = <CategoryModel>[].obs; // Home ekrani uchun
+  final homeCategoriesByBarberCount =
+      <CategoryModel>[].obs; // Barberlar soni bo'yicha
+  final homeCategoriesById = <CategoryModel>[].obs; // ID bo'yicha
+
+  // Eski o'zgaruvchilarni yangilari bilan moslashtirish
   final barberSortedCategories =
       <CategoryModel>[].obs; // Barberlar soni bo'yicha saralangan
   final idSortedCategories = <CategoryModel>[].obs; // ID bo'yicha saralangan
+
   final banners = <BannerModel>[].obs;
   final barbers = <BarberModel>[].obs; // Barcha barberlar
   final filteredBarbers = <BarberModel>[].obs; // Filtrlangan barberlar
+  final displayedBarbers =
+      <BarberModel>[].obs; // Ko'rsatiladigan barberlar (pagination uchun)
+
+  // API so'rovlari sonini kamaytirish uchun cash
+  final Map<int, List<BarberModel>> _cachedBarbersByCategory = {};
+
+  // Pagination parametrlari
+  final currentPage = 1.obs;
+  final itemsPerPage = 10;
+  final hasMoreItems = true.obs;
+  final isLoadingMore = false.obs;
+
   final dio = Dio(); // Dio instance
   final isLoading = false.obs;
   final isCategoriesLoading = false.obs;
@@ -122,67 +52,321 @@ class HomeController extends GetxController {
   final categoriesError = ''.obs;
   final barbersError = ''.obs;
 
+  // Umumiy loading holati
+  bool get isAnyLoading =>
+      isLoading.value || isCategoriesLoading.value || isBarbersLoading.value;
+
   @override
   void onInit() {
     super.onInit();
 
-    // Kategoriyalarni yuklash va barberlarni yuklash ketma-ketligini to'g'rilash
-    loadCategories().then((_) {
-      loadBarbers().then((_) {
-        // Barberlar va kategoriyalar yuklangandan so'ng filtrlashni bajarish
-        filterBarbersBySelectedCategory();
-      });
-    });
+    // Barcha ma'lumotlarni bir marta yuklash
+    _initializeData();
 
-    loadBanners();
+    // Kategoriya o'zgarishini kuzatish - faqat kategoriya haqiqatan o'zgargandagina
+    ever(selectedCategoryIndex, (int index) {
+      // DEBUG: Kategoriya o'zgarishi haqida xabar
+      print(
+          'Kategoriya indeksi o\'zgardi: $index, avvalgi: ${previousCategoryIndex.value}');
 
-    // Kategoriya o'zgarishini kuzatish
-    ever(selectedCategoryIndex, (_) {
-      filterBarbersBySelectedCategory();
+      // Faqat indeks o'zgargandagina filter qilish
+      if (index != previousCategoryIndex.value) {
+        print('Haqiqatan yangi kategoriya tanlandi, filtrlash...');
+        filterBarbersBySelectedCategory(forceReload: true);
+        previousCategoryIndex.value = index;
+      } else {
+        print('Bir xil kategoriya tanlandi, filtrlash amalga oshirilmaydi');
+      }
     });
   }
 
-  // Tanlangan kategoriyaga qarab barberlarni filtrlash
-  void filterBarbersBySelectedCategory() {
-    if (idSortedCategories.isEmpty || barbers.isEmpty) return;
-
+  // Barcha ma'lumotlarni yuklash uchun yagona metod
+  Future<void> _initializeData() async {
     try {
-      // Tanlangan kategoriya ID sini olish
-      final selectedCategory = idSortedCategories[selectedCategoryIndex.value];
+      // Kategoriyalarni yuklash
+      await loadCategories();
 
-      // Agar filteredBarbers bo'sh bo'lmasa va birinchi barber tanlangan kategoriyaga tegishli bo'lsa,
-      // qayta filtrlashni bajarmaslik (rasmlarni qayta yuklanishini oldini olish)
-      if (filteredBarbers.isNotEmpty &&
-          filteredBarbers.first.categoryId == selectedCategory.id) {
-        return;
-      }
+      // Barberlarni yuklash
+      await loadBarbers();
 
-      // Shu kategoriyaga tegishli barberlarni filtrlash
-      filteredBarbers.value = barbers
-          .where((barber) => barber.categoryId == selectedCategory.id)
-          .toList();
+      // Barberlar va kategoriyalar yuklangandan so'ng:
+      // 1. Kategoriyalarni real barber soni bo'yicha yangilash
+      updateCategoriesWithRealBarberCount();
 
-      print(
-          'Filtered barbers for category ${selectedCategory.name}: ${filteredBarbers.length}');
+      // 2. Dastlabki tanlangan kategoriya uchun barberlarni filtrlash
+      filterBarbersBySelectedCategory(forceReload: true);
+
+      // 3. Bannerlarni yuklash
+      await loadBanners();
     } catch (e) {
-      print('Error filtering barbers: $e');
-      // Xatolik yuz berganda bo'sh ro'yxat qaytarish
-      filteredBarbers.value = [];
+      print('Ma\'lumotlarni yuklashda xatolik: $e');
+      error.value = 'Ma\'lumotlarni yuklashda xatolik: $e';
     }
   }
 
-  // Kategoriyalarni barberlar soni bo'yicha saralash
-  void sortCategoriesByBarberCount() {
-    categories.value = List.from(barberSortedCategories);
+  // Barberlar haqiqiy soniga ko'ra kategoriyalarni yangilash
+  void updateCategoriesWithRealBarberCount() {
+    try {
+      // Har bir kategoriya uchun barberlar sonini hisoblash
+      final Map<int, int> categoryBarberCounts = {};
+      for (var barber in barbers) {
+        if (categoryBarberCounts.containsKey(barber.categoryId)) {
+          categoryBarberCounts[barber.categoryId] =
+              categoryBarberCounts[barber.categoryId]! + 1;
+        } else {
+          categoryBarberCounts[barber.categoryId] = 1;
+        }
+      }
+
+      // Barber soni 0 bo'lgan kategoriyalarni filtrlash
+      final filteredHomeCategories = homeCategories
+          .where((category) =>
+              categoryBarberCounts[category.id] != null &&
+              categoryBarberCounts[category.id]! > 0)
+          .toList();
+
+      // Agar filtrlashdan keyin ro'yxat bo'sh bo'lsa, original ro'yxatni saqlash
+      if (filteredHomeCategories.isNotEmpty) {
+        // Barcha ro'yxatlarni yangilash
+        homeCategories.value = filteredHomeCategories;
+
+        // Barberlar soni bo'yicha saralash
+        final sortedByBarberCount =
+            List<CategoryModel>.from(filteredHomeCategories);
+        sortedByBarberCount.sort((a, b) {
+          final countA = categoryBarberCounts[a.id] ?? 0;
+          final countB = categoryBarberCounts[b.id] ?? 0;
+          return countB.compareTo(countA);
+        });
+        homeCategoriesByBarberCount.value = sortedByBarberCount;
+
+        // ID bo'yicha saralash
+        final sortedById = List<CategoryModel>.from(filteredHomeCategories);
+        sortedById.sort((a, b) => a.id.compareTo(b.id));
+        homeCategoriesById.value = sortedById;
+
+        // Eski o'zgaruvchilarni yangilash
+        barberSortedCategories.value = sortedByBarberCount;
+        idSortedCategories.value = sortedById;
+        categories.value = sortedByBarberCount;
+
+        // Eng ko'p barberli 4 ta kategoriyani olish
+        if (sortedByBarberCount.length > 4) {
+          topCategories.value = sortedByBarberCount.sublist(0, 4);
+        } else {
+          topCategories.value = sortedByBarberCount;
+        }
+
+        // Barcha kategoriyalar ro'yxatlarini ham yangilash
+        allCategoriesByBarberCount.value = sortedByBarberCount;
+        allCategoriesById.value = sortedById;
+      }
+
+      print(
+          'Kategoriyalar haqiqiy barber soniga ko\'ra filtrlandi. Natija: ${homeCategories.length} kategoriya');
+    } catch (e) {
+      print('Kategoriyalarni filtrlashda xatolik: $e');
+    }
   }
 
-  // Kategoriyalarni ID bo'yicha saralash
+  // Tanlangan kategoriyaga qarab barberlarni filtrlash
+  void filterBarbersBySelectedCategory({bool forceReload = false}) {
+    if (homeCategoriesById.isEmpty) {
+      print('Kategoriyalar ro\'yxati bo\'sh');
+      return;
+    }
+
+    if (barbers.isEmpty) {
+      print('Barberlar ro\'yxati bo\'sh');
+      return;
+    }
+
+    try {
+      // Indeks chegaradan chiqib ketmasligi uchun tekshirish
+      if (selectedCategoryIndex.value >= homeCategoriesById.length) {
+        print('Tanlangan indeks chegaradan tashqarida, 0-indeksga qaytarildi');
+        selectedCategoryIndex.value = 0;
+      }
+
+      // Tanlangan kategoriya ID sini olish
+      final selectedCategory = homeCategoriesById[selectedCategoryIndex.value];
+      final categoryId = selectedCategory.id;
+
+      print('Tanlangan kategoriya: ${selectedCategory.name} (ID: $categoryId)');
+
+      // MUHIM: Qayta-qayta yuklashni oldini olish uchun tekshirish:
+      // 1. Agar forceReload false bo'lsa
+      // 2. Va filteredBarbers bo'sh bo'lmasa
+      // 3. Va birinchi barberning kategoriyasi tanlangan kategoriyaning ID'siga teng bo'lsa
+      if (!forceReload &&
+          filteredBarbers.isNotEmpty &&
+          filteredBarbers.first.categoryId == categoryId) {
+        print(
+            'QAYTA YUKLASH QO\'LLANILMADI: Kategoriya o\'zgarmagan: ${selectedCategory.name}');
+        return;
+      }
+
+      print(
+          'FILTERLASH BOSHLANDI: Kategoriya ${selectedCategory.name} uchun barberlar filterlanyapti');
+
+      // Cache'dan barberlarni olish yoki cash yangilash
+      if (_cachedBarbersByCategory.containsKey(categoryId) && !forceReload) {
+        print(
+            'KESHDAN FOYDALANILDI: ${_cachedBarbersByCategory[categoryId]!.length} barber topildi');
+        filteredBarbers.value = _cachedBarbersByCategory[categoryId]!;
+      } else {
+        // Shu kategoriyaga tegishli barberlarni filtrlash
+        final newFilteredBarbers =
+            barbers.where((barber) => barber.categoryId == categoryId).toList();
+
+        // Cache'ni yangilash
+        _cachedBarbersByCategory[categoryId] = newFilteredBarbers;
+
+        // Qiymatni o'rnatish
+        filteredBarbers.value = newFilteredBarbers;
+        print(
+            'YANGI FILTERLASH: ${newFilteredBarbers.length} barber filterlandi');
+      }
+
+      // Pagination parametrlarini qayta o'rnatish
+      resetPagination();
+    } catch (e) {
+      print('Barberlarni filtrlashda xatolik: $e');
+      // Xatolik yuz berganda bo'sh ro'yxat qaytarish
+      filteredBarbers.value = [];
+      displayedBarbers.value = [];
+      hasMoreItems.value = false;
+    }
+  }
+
+  // Kategoriya ID orqali tanlash (boshqa joylardan chaqirish uchun)
+  void selectCategoryById(int categoryId) {
+    final index =
+        homeCategoriesById.indexWhere((category) => category.id == categoryId);
+
+    if (index != -1) {
+      print(
+          'selectCategoryById: Kategoriya ID: $categoryId indeksi topildi: $index');
+
+      // Agar index bir xil bo'lsa, boshqa amallar qilishga hojat yo'q
+      if (selectedCategoryIndex.value == index) {
+        print(
+            'selectCategoryById: Bir xil kategoriya tanlangan, qayta filterlash qo\'llanilmaydi');
+        return;
+      }
+
+      // Yangi indeksni o'rnatish - bu ever() orqali filterBarbersBySelectedCategory ni chaqiradi
+      selectedCategoryIndex.value = index;
+    } else {
+      print('selectCategoryById: Kategoriya ID: $categoryId topilmadi');
+    }
+  }
+
+  // Pagination parametrlarini qayta o'rnatish
+  void resetPagination() {
+    print('Pagination qayta o\'rnatilmoqda');
+    currentPage.value = 1;
+    hasMoreItems.value = true;
+    // Avvalgi ko'rsatilgan barberlarni tozalash
+    displayedBarbers.clear();
+    // Birinchi sahifani yuklash
+    loadMoreBarbers();
+  }
+
+  // Keyingi sahifani yuklash
+  Future<void> loadMoreBarbers() async {
+    if (isLoadingMore.value) {
+      print('Barberlar allaqachon yuklanmoqda, qayta yuklash bekor qilindi');
+      return;
+    }
+
+    try {
+      isLoadingMore.value = true;
+      print(
+          'Barberlar uchun keyingi sahifa yuklanmoqda: sahifa ${currentPage.value}');
+
+      // Sahifa indekslarini hisoblash
+      final startIndex = (currentPage.value - 1) * itemsPerPage;
+      final endIndex = startIndex + itemsPerPage;
+
+      // Agar barberlar ro'yxati tugagan bo'lsa
+      if (startIndex >= filteredBarbers.length) {
+        hasMoreItems.value = false;
+        isLoadingMore.value = false;
+        print('Barcha barberlar ko\'rsatilgan, boshqa barber yo\'q');
+        return;
+      }
+
+      // Keyingi sahifa indeksi
+      final actualEndIndex =
+          endIndex > filteredBarbers.length ? filteredBarbers.length : endIndex;
+
+      // Yangi barberlarni olish
+      final newBarbers = filteredBarbers.sublist(startIndex, actualEndIndex);
+      print(
+          '${newBarbers.length} ta yangi barber yuklandi (${startIndex + 1}-$actualEndIndex)');
+
+      // Yangi sahifa uchun kechikish (real API da kerak bo'lmaydi)
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      // Barberlarni qo'shish
+      displayedBarbers.addAll(newBarbers);
+      print('Jami ${displayedBarbers.length} barber ko\'rsatilmoqda');
+
+      // Keyingi sahifani belgilash
+      currentPage.value++;
+
+      // Yana barberlar bormi yo'qligini tekshirish
+      hasMoreItems.value = endIndex < filteredBarbers.length;
+      if (!hasMoreItems.value) {
+        print('Barcha barberlar ko\'rsatildi, boshqa yuklash imkoniyati yo\'q');
+      }
+    } catch (e) {
+      print('Barberlarni sahifalashda xatolik: $e');
+    } finally {
+      isLoadingMore.value = false;
+    }
+  }
+
+  // Kategoriyalarni barberlar soni bo'yicha saralash - Home ekrani uchun
+  void sortCategoriesByBarberCount() {
+    categories.value = List.from(homeCategoriesByBarberCount);
+    barberSortedCategories.value = List.from(homeCategoriesByBarberCount);
+  }
+
+  // Kategoriyalarni ID bo'yicha saralash - Home ekrani uchun
   void sortCategoriesById() {
-    categories.value = List.from(idSortedCategories);
+    categories.value = List.from(homeCategoriesById);
+    idSortedCategories.value = List.from(homeCategoriesById);
+  }
+
+  // Barcha kategoriyalarni qaytarish (filtrsiz) - boshqa ekranlar uchun
+  List<CategoryModel> getAllCategories() {
+    return allCategories;
+  }
+
+  // Barberlar soni bo'yicha saralangan barcha kategoriyalarni qaytarish
+  List<CategoryModel> getAllCategoriesByBarberCount() {
+    return allCategoriesByBarberCount;
+  }
+
+  // ID bo'yicha saralangan barcha kategoriyalarni qaytarish
+  List<CategoryModel> getAllCategoriesById() {
+    return allCategoriesById;
   }
 
   void setSelectedCategoryIndex(int index) {
+    // Agar bir xil indeks tanlansa, hech narsa qilmaslik
+    if (index == selectedCategoryIndex.value) {
+      print(
+          'setSelectedCategoryIndex: Bir xil kategoriya indeksi tanlandi ($index), o\'zgarish yo\'q');
+      return;
+    }
+
+    print(
+        'setSelectedCategoryIndex: Yangi kategoriya indeksi tanlanmoqda: $index (avvalgi: ${selectedCategoryIndex.value})');
     selectedCategoryIndex.value = index;
+    // Bu ever() watcher'ni ishga tushiradi va filterBarbersBySelectedCategory avtomatik chaqiriladi
   }
 
   Future<void> loadBanners() async {
@@ -217,28 +401,53 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
-        final allCategories =
+        final retrievedCategories =
             data.map((json) => CategoryModel.fromJson(json)).toList();
 
+        // Barcha kategoriyalar o'z ichiga oladi BARCHA kategoriyalarni
+        allCategories.value = List.from(retrievedCategories);
+
+        // Barber soni 0 dan katta bo'lgan kategoriyalarni filtrlash
+        final filteredCategories = retrievedCategories
+            .where((category) => category.barbersCount > 0)
+            .toList();
+
+        // Agar filtrlandan keyin kategoriyalar bo'sh bo'lsa, bu holda original ro'yxatni ishlat
+        final categoriesToUse = filteredCategories.isEmpty
+            ? retrievedCategories
+            : filteredCategories;
+
+        // Barcha joylarda foydalanish uchun filter qilingan kategoriyalarni ishlatamiz
+
+        // Home ekrani uchun va boshqa ekranlar uchun ham
+        homeCategories.value = List.from(categoriesToUse);
+
         // Barberlar soni bo'yicha saralash
-        final byBarberCount = List<CategoryModel>.from(allCategories);
-        byBarberCount.sort((a, b) => b.barbersCount.compareTo(a.barbersCount));
-        barberSortedCategories.value = byBarberCount;
+        final sortedByBarberCount = List<CategoryModel>.from(categoriesToUse);
+        sortedByBarberCount
+            .sort((a, b) => b.barbersCount.compareTo(a.barbersCount));
+        homeCategoriesByBarberCount.value = sortedByBarberCount;
 
         // ID bo'yicha saralash
-        final byId = List<CategoryModel>.from(allCategories);
-        byId.sort((a, b) => a.id.compareTo(b.id));
-        idSortedCategories.value = byId;
+        final sortedById = List<CategoryModel>.from(categoriesToUse);
+        sortedById.sort((a, b) => a.id.compareTo(b.id));
+        homeCategoriesById.value = sortedById;
 
-        // Asosiy kategoriyalar ro'yxatini yangilash (default: barber soni bo'yicha)
-        categories.value = byBarberCount;
+        // Eski o'zgaruvchilarni yangilash uchun
+        barberSortedCategories.value = sortedByBarberCount;
+        idSortedCategories.value = sortedById;
+        categories.value = sortedByBarberCount;
 
         // Eng ko'p barberli 4 ta kategoriyani olish
-        if (byBarberCount.length > 4) {
-          topCategories.value = byBarberCount.sublist(0, 4);
+        if (sortedByBarberCount.length > 4) {
+          topCategories.value = sortedByBarberCount.sublist(0, 4);
         } else {
-          topCategories.value = byBarberCount;
+          topCategories.value = sortedByBarberCount;
         }
+
+        // Barcha kategoriyalar ro'yxatlari uchun ham filter qilingan kategoriyalarni ishlatamiz
+        allCategoriesByBarberCount.value = sortedByBarberCount;
+        allCategoriesById.value = sortedById;
       } else {
         categoriesError.value = 'Kategoriyalarni yuklashda xatolik';
       }
