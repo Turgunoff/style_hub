@@ -1,9 +1,9 @@
 //create home controller
 
 import 'package:get/get.dart';
-import 'package:dio/dio.dart'; // Dio ni import qilamiz
-import '../../../core/config/api_config.dart';
-import '../../../core/data/models.dart'; // Modellarni import qilamiz
+import '../../../core/data/models.dart';
+import '../../../core/repositories/api_repository.dart';
+import '../../../core/utils/logger.dart';
 
 class HomeController extends GetxController {
   // ===== ASOSIY O'ZGARUVCHILAR =====
@@ -40,7 +40,7 @@ class HomeController extends GetxController {
   final isLoadingMore = false.obs;
 
   // API va loading
-  final dio = Dio();
+  final ApiRepository _apiRepository = ApiRepository();
   final isLoading = false.obs;
   final isCategoriesLoading = false.obs;
   final isBarbersLoading = false.obs;
@@ -63,11 +63,11 @@ class HomeController extends GetxController {
   void _setupCategoryWatcher() {
     ever(selectedCategoryIndex, (int index) {
       if (index != previousCategoryIndex.value) {
-        print('Yangi kategoriya tanlandi: $index');
+        AppLogger.info('Yangi kategoriya tanlandi: $index');
         filterBarbersBySelectedCategory(forceReload: true);
         previousCategoryIndex.value = index;
       } else {
-        print('Bir xil kategoriya tanlandi: $index');
+        AppLogger.info('Bir xil kategoriya tanlandi: $index');
       }
     });
   }
@@ -81,7 +81,7 @@ class HomeController extends GetxController {
       filterBarbersBySelectedCategory(forceReload: true);
       await loadBanners();
     } catch (e) {
-      print('Ma\'lumotlarni yuklashda xatolik: $e');
+      AppLogger.error('Ma\'lumotlarni yuklashda xatolik: $e');
       error.value = 'Ma\'lumotlarni yuklashda xatolik: $e';
     }
   }
@@ -94,21 +94,11 @@ class HomeController extends GetxController {
       isCategoriesLoading.value = true;
       categoriesError.value = '';
 
-      final response =
-          await dio.get('${ApiConfig.baseUrl}${ApiConfig.categoriesEndpoint}');
-
-      if (response.statusCode == 200) {
-        final List<dynamic> data = response.data;
-        final retrievedCategories =
-            data.map((json) => CategoryModel.fromJson(json)).toList();
-
-        _processCategories(retrievedCategories);
-      } else {
-        categoriesError.value = 'Kategoriyalarni yuklashda xatolik';
-      }
+      final retrievedCategories = await _apiRepository.getCategories();
+      _processCategories(retrievedCategories);
     } catch (e) {
       categoriesError.value = 'Kategoriyalarni yuklashda xatolik: $e';
-      print('Kategoriyalarni yuklashda xatolik: $e');
+      AppLogger.error('Kategoriyalarni yuklashda xatolik: $e');
     } finally {
       isCategoriesLoading.value = false;
     }
@@ -180,9 +170,10 @@ class HomeController extends GetxController {
       _sortCategoriesByRealBarberCount(
           filteredHomeCategories, categoryBarberCounts);
 
-      print('Kategoriyalar yangilandi: ${homeCategories.length} kategoriya');
+      AppLogger.info(
+          'Kategoriyalar yangilandi: ${homeCategories.length} kategoriya');
     } catch (e) {
-      print('Kategoriyalarni filtrlashda xatolik: $e');
+      AppLogger.error('Kategoriyalarni filtrlashda xatolik: $e');
     }
   }
 
@@ -241,11 +232,11 @@ class HomeController extends GetxController {
   // Kategoriya indeksini o'rnatish
   void setSelectedCategoryIndex(int index) {
     if (index == selectedCategoryIndex.value) {
-      print('Bir xil kategoriya indeksi tanlandi: $index');
+      AppLogger.info('Bir xil kategoriya indeksi tanlandi: $index');
       return;
     }
 
-    print('Yangi kategoriya indeksi tanlanmoqda: $index');
+    AppLogger.info('Yangi kategoriya indeksi tanlanmoqda: $index');
     selectedCategoryIndex.value = index;
   }
 
@@ -255,16 +246,16 @@ class HomeController extends GetxController {
         homeCategoriesById.indexWhere((category) => category.id == categoryId);
 
     if (index == -1) {
-      print('Kategoriya topilmadi: $categoryId');
+      AppLogger.warning('Kategoriya topilmadi: $categoryId');
       return;
     }
 
     if (selectedCategoryIndex.value == index) {
-      print('Bir xil kategoriya tanlangan: $categoryId');
+      AppLogger.info('Bir xil kategoriya tanlangan: $categoryId');
       return;
     }
 
-    print('Kategoriya tanlandi: $categoryId (indeks: $index)');
+    AppLogger.info('Kategoriya tanlandi: $categoryId (indeks: $index)');
     selectedCategoryIndex.value = index;
   }
 
@@ -276,18 +267,10 @@ class HomeController extends GetxController {
       isBarbersLoading.value = true;
       barbersError.value = '';
 
-      final response =
-          await dio.get('${ApiConfig.baseUrl}${ApiConfig.barbersEndpoint}');
-
-      if (response.statusCode == 200) {
-        final List<dynamic> data = response.data;
-        barbers.value = data.map((json) => BarberModel.fromJson(json)).toList();
-      } else {
-        barbersError.value = 'Barberlarni yuklashda xatolik';
-      }
+      barbers.value = await _apiRepository.getBarbers();
     } catch (e) {
       barbersError.value = 'Barberlarni yuklashda xatolik: $e';
-      print('Barberlarni yuklashda xatolik: $e');
+      AppLogger.error('Barberlarni yuklashda xatolik: $e');
     } finally {
       isBarbersLoading.value = false;
     }
@@ -303,7 +286,8 @@ class HomeController extends GetxController {
       if (selectedCategory == null) return;
 
       final categoryId = selectedCategory.id;
-      print('Tanlangan kategoriya: ${selectedCategory.name} (ID: $categoryId)');
+      AppLogger.info(
+          'Tanlangan kategoriya: ${selectedCategory.name} (ID: $categoryId)');
 
       // Qayta yuklash kerak emas bo'lsa, qaytish
       if (_shouldSkipReloading(categoryId, forceReload)) return;
@@ -314,7 +298,7 @@ class HomeController extends GetxController {
       // Pagination parametrlarini qayta o'rnatish
       resetPagination();
     } catch (e) {
-      print('Barberlarni filtrlashda xatolik: $e');
+      AppLogger.error('Barberlarni filtrlashda xatolik: $e');
       _clearBarberLists();
     }
   }
@@ -451,18 +435,10 @@ class HomeController extends GetxController {
       isLoading.value = true;
       error.value = '';
 
-      final response =
-          await dio.get('${ApiConfig.baseUrl}${ApiConfig.bannersEndpoint}');
-
-      if (response.statusCode == 200) {
-        final List<dynamic> data = response.data;
-        banners.value = data.map((json) => BannerModel.fromJson(json)).toList();
-      } else {
-        error.value = 'Failed to load banners';
-      }
+      banners.value = await _apiRepository.getBanners();
     } catch (e) {
-      error.value = 'Error loading banners: $e';
-      print('Error loading banners: $e');
+      error.value = 'Bannerlarni yuklashda xatolik: $e';
+      print('Bannerlarni yuklashda xatolik: $e');
     } finally {
       isLoading.value = false;
     }

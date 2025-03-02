@@ -9,6 +9,7 @@ import 'core/theme/app_theme.dart';
 // import 'core/theme/light_theme.dart';
 import 'core/constants/app_constants.dart';
 import 'core/localization/app_localization.dart';
+import 'core/utils/logger.dart';
 
 // Routes
 import 'presentation/routes/app_pages.dart';
@@ -46,13 +47,12 @@ Future<void> main() async {
 
     runApp(const MyApp());
   } catch (error) {
-    print('Error in main: $error');
+    AppLogger.error('Error in main: $error');
     runApp(const ErrorApp());
   }
 }
 
 Future<void> initServices() async {
-  
   // Servislarni ishga tushirish
   await Get.putAsync(() => SecureStorage().init());
   await Get.putAsync(() => ConnectivityService().init());

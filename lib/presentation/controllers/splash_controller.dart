@@ -1,35 +1,39 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import '../../core/utils/logger.dart';
 import '../routes/app_routes.dart';
 
 class SplashController extends GetxController {
-  final _storage = GetStorage(); // GetStorage instance
-
   @override
   void onInit() {
-    print('SplashController onInit called'); // Konsolda chiqishi kerak
     super.onInit();
-    _checkFirstLaunch();
+    AppLogger.info('SplashController initialized');
+    _navigateToNextScreen();
   }
 
-  Future<void> _checkFirstLaunch() async {
+  Future<void> _navigateToNextScreen() async {
     try {
-      await Future.delayed(const Duration(seconds: 2));
+      // Splash ekranida 3 sekund kutish
+      await Future.delayed(const Duration(seconds: 3));
 
-      final isFirstLaunch = _storage.read<bool>('isFirstLaunch') ?? true;
-      print('isFirstLaunch: $isFirstLaunch'); // Qo‘shilgan print
-
-      if (isFirstLaunch) {
-        await _storage.write('isFirstLaunch', false);
-        print('Navigating to ONBOARDING...');
+      // Keyingi ekranga o'tish
+      if (await _isFirstLaunch()) {
+        AppLogger.info('Navigating to onboarding screen');
         Get.offAllNamed(AppRoutes.ONBOARDING);
       } else {
-        print('Navigating to BOTTOM_NAV...');
+        AppLogger.info('Navigating to bottom nav screen');
         Get.offAllNamed(AppRoutes.BOTTOM_NAV);
       }
     } catch (e) {
-      print('Error in _checkFirstLaunch: $e');
+      AppLogger.error('Error during navigation: $e');
+      // Xatolik yuz berganda ham asosiy ekranga o'tish
       Get.offAllNamed(AppRoutes.BOTTOM_NAV);
     }
+  }
+
+  // Ilova birinchi marta ishga tushirilganligini tekshirish
+  // Bu yerda SharedPreferences yoki boshqa storage ishlatilishi kerak
+  Future<bool> _isFirstLaunch() async {
+    // Hozircha har doim false qaytarish (ya'ni onboarding ko'rsatilmaydi)
+    return false;
   }
 }
