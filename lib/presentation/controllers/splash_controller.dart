@@ -6,6 +6,8 @@ import '../../core/services/storage/secure_storage.dart';
 class SplashController extends GetxController {
   final SecureStorage _secureStorage = Get.find<SecureStorage>();
   static const String _firstLaunchKey = 'first_launch_completed';
+  final showSecondAnimation = false.obs;
+  final isAnimationComplete = false.obs;
 
   @override
   void onInit() {
@@ -22,7 +24,7 @@ class SplashController extends GetxController {
       // Keyingi ekranga o'tish
       if (await _isFirstLaunch()) {
         AppLogger.info('Navigating to onboarding screen');
-        Get.offAllNamed(AppRoutes.ONBOARDING);
+        startSecondAnimation();
       } else {
         AppLogger.info('Navigating to bottom nav screen');
         Get.offAllNamed(AppRoutes.BOTTOM_NAV);
@@ -52,5 +54,17 @@ class SplashController extends GetxController {
       AppLogger.error('Error checking first launch: $e');
       return false; // Xatolik yuz berganda default qiymat
     }
+  }
+
+  void startSecondAnimation() {
+    showSecondAnimation.value = true;
+  }
+
+  void onAnimationsComplete() {
+    isAnimationComplete.value = true;
+    // Animatsiyalar tugagandan so'ng 1 soniya kutib, keyingi ekranga o'tish
+    Future.delayed(const Duration(seconds: 1), () {
+      Get.offAllNamed(AppRoutes.ONBOARDING);
+    });
   }
 }

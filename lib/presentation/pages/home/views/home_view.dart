@@ -8,6 +8,7 @@ import 'package:looksy/presentation/pages/home/widgets/category_tabs.dart';
 import 'package:looksy/presentation/pages/home/widgets/search_bar_widget.dart';
 import 'package:looksy/presentation/pages/home/widgets/shimmer_loading.dart';
 import 'package:looksy/presentation/pages/home/widgets/top_categories.dart';
+import 'package:looksy/presentation/widgets/common/custom_refresh_indicator.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -24,7 +25,7 @@ class HomeView extends GetView<HomeController> {
         ),
         actions: [
           IconButton(
-            icon: Icon(IconsaxPlusLinear.notification),
+            icon: const Icon(IconsaxPlusLinear.notification),
             onPressed: () {
               // Navigate to notifications screen
             },
@@ -38,7 +39,7 @@ class HomeView extends GetView<HomeController> {
             controller.isCategoriesLoading.value ||
             controller.isBarbersLoading.value;
 
-        return RefreshIndicator(
+        return LooksyRefreshIndicator(
           onRefresh: () async {
             await controller.loadBanners();
             await controller.loadCategories();
