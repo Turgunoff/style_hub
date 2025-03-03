@@ -1,8 +1,12 @@
 import 'package:get/get.dart';
 import '../../core/utils/logger.dart';
 import '../routes/app_routes.dart';
+import '../../core/services/storage/secure_storage.dart';
 
 class SplashController extends GetxController {
+  final SecureStorage _secureStorage = Get.find<SecureStorage>();
+  static const String _firstLaunchKey = 'first_launch_completed';
+
   @override
   void onInit() {
     super.onInit();
@@ -31,9 +35,22 @@ class SplashController extends GetxController {
   }
 
   // Ilova birinchi marta ishga tushirilganligini tekshirish
-  // Bu yerda SharedPreferences yoki boshqa storage ishlatilishi kerak
   Future<bool> _isFirstLaunch() async {
-    // Hozircha har doim false qaytarish (ya'ni onboarding ko'rsatilmaydi)
-    return false;
+    try {
+      final String? isCompleted =
+          await _secureStorage.readData(key: _firstLaunchKey);
+
+      // Agar _firstLaunchKey kalit mavjud bo'lmasa yoki "false" bo'lsa, demak birinchi marta
+      if (isCompleted == null || isCompleted == "false") {
+        // Birinchi ishga tushirilgandan so'ng true ga o'zgartirish
+        await _secureStorage.writeData(key: _firstLaunchKey, value: "true");
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      AppLogger.error('Error checking first launch: $e');
+      return false; // Xatolik yuz berganda default qiymat
+    }
   }
 }

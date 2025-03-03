@@ -123,4 +123,4 @@ lib/
 │       ├── app_pages.dart        # Sahifalar ro'yxati
 │       └── app_routes.dart       # Route nomlari
 │
-└── main.dart                     # Ilovaga kirish nuqtasi
+└── main.dart                     
