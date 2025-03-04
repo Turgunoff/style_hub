@@ -76,59 +76,61 @@ class TopCategories extends StatelessWidget {
                       categoryColor = Color(0xFFFADBEC);
                   }
 
-                  return Column(
-                    children: [
-                      Container(
-                        height: 64,
-                        width: 64,
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: categoryColor,
-                          borderRadius: BorderRadius.circular(100),
+                  return SizedBox(
+                    height: 110,
+                    width: 70,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 64,
+                          width: 64,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: categoryColor,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: category.imageUrl.startsWith('http')
+                              ? CachedNetworkImage(
+                                  imageUrl: category.imageUrl,
+                                  width: 32,
+                                  height: 32,
+                                  fit: BoxFit.contain,
+                                  cacheKey: 'category_${category.id}',
+                                  memCacheWidth: 64,
+                                  memCacheHeight: 64,
+                                  maxWidthDiskCache: 64,
+                                  maxHeightDiskCache: 64,
+                                  placeholder: (context, url) => Icon(
+                                    IconsaxPlusLinear.scissor,
+                                    size: 24,
+                                    color: Colors.grey,
+                                  ),
+                                  errorWidget: (context, url, error) => Icon(
+                                    IconsaxPlusLinear.scissor,
+                                    size: 24,
+                                  ),
+                                )
+                              : SvgPicture.asset(
+                                  'assets/image/qaychi.svg',
+                                  width: 32,
+                                  height: 32,
+                                ),
                         ),
-                        child: category.imageUrl.startsWith('http')
-                            ? CachedNetworkImage(
-                                imageUrl: category.imageUrl,
-                                width: 32,
-                                height: 32,
-                                fit: BoxFit.contain,
-                                cacheKey: 'category_${category.id}',
-                                memCacheWidth:
-                                    64, // 2x resolution for better quality
-                                memCacheHeight: 64,
-                                maxWidthDiskCache: 64,
-                                maxHeightDiskCache: 64,
-                                placeholder: (context, url) => Icon(
-                                  IconsaxPlusLinear.scissor,
-                                  size: 24,
-                                  color: Colors.grey,
-                                ),
-                                errorWidget: (context, url, error) => Icon(
-                                  IconsaxPlusLinear.scissor,
-                                  size: 24,
-                                ),
-                              )
-                            : SvgPicture.asset(
-                                'assets/image/qaychi.svg',
-                                width: 32,
-                                height: 32,
-                              ),
-                      ),
-                      SizedBox(height: 8),
-                      SizedBox(
-                        width: 70,
-                        child: Builder(builder: (context) {
-                          final words = category.name.split(' ');
-                          return Text(
-                            category.name,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            textAlign: TextAlign.center,
-                            maxLines: words.length > 1 ? 2 : 1,
-                            overflow: TextOverflow.ellipsis,
-                          );
-                        }),
-                      ),
-                    ],
+                        const SizedBox(height: 8),
+                        Expanded(
+                          child: Builder(builder: (context) {
+                            final words = category.name.split(' ');
+                            return Text(
+                              category.name,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              textAlign: TextAlign.center,
+                              maxLines: words.length > 1 ? 2 : 1,
+                              overflow: TextOverflow.ellipsis,
+                            );
+                          }),
+                        ),
+                      ],
+                    ),
                   );
                 }).toList(),
               ),
