@@ -20,6 +20,7 @@ import 'presentation/bindings/initial_binding.dart';
 // Services
 import 'core/services/storage/secure_storage.dart';
 import 'core/services/connectivity/connectivity_service.dart';
+import 'core/services/auth_service.dart';
 // import 'core/services/notification/notification_service.dart';
 
 Future<void> main() async {
@@ -45,6 +46,9 @@ Future<void> main() async {
 
     // Servislarni ishga tushirish
     await initServices();
+
+    // AuthService'ni ishga tushirish
+    await Get.putAsync(() async => AuthService());
 
     runApp(const MyApp());
   } catch (error) {

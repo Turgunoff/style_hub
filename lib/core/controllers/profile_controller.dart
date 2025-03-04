@@ -1,15 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
+import '../services/auth_service.dart';
 
 class ProfileController extends GetxController {
+  final _authService = Get.find<AuthService>();
+
   // Foydalanuvchi ma'lumotlari
-  final userName = 'Aziz Sultonov'.obs;
-  final userEmail = 'aziz.sultonov@gmail.com'.obs;
-  final userImage = 'https://example.com/profile.jpg'.obs;
+  final userName = ''.obs;
+  final userEmail = ''.obs;
+  final userImage = ''.obs;
 
   // Ilova sozlamalari
   final isDarkMode = false.obs;
+  final isLoading = true.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadUserData();
+  }
+
+  // Foydalanuvchi ma'lumotlarini yuklash
+  Future<void> loadUserData() async {
+    isLoading.value = true;
+    try {
+      final userData = await _authService.getUserData();
+      userName.value = userData['name'] ?? '';
+      userEmail.value = userData['email'] ?? '';
+      userImage.value =
+          userData['imageUrl'] ?? 'https://example.com/default.jpg';
+    } catch (e) {
+      debugPrint('Error loading user data: $e');
+    }
+    isLoading.value = false;
+  }
 
   // Mavzuni o'zgartirish
   void toggleTheme(bool value) {
@@ -21,7 +46,7 @@ class ProfileController extends GetxController {
   void showLanguageDialog() {
     Get.dialog(
       AlertDialog(
-        title: Text('Tilni tanlang'),
+        title: const Text('Tilni tanlang'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -57,8 +82,8 @@ class ProfileController extends GetxController {
             child: const Text('Bekor qilish'),
           ),
           TextButton(
-            onPressed: () {
-              // Tizimdan chiqish logikasi
+            onPressed: () async {
+              await _authService.logout();
               Get.offAllNamed('/login');
             },
             child: const Text(
