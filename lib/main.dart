@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 
-// Core
 import 'core/theme/app_theme.dart';
 // import 'core/theme/dark_theme.dart';
 // import 'core/theme/light_theme.dart';
@@ -24,6 +23,8 @@ import 'core/services/connectivity/connectivity_service.dart';
 // import 'core/services/notification/notification_service.dart';
 
 Future<void> main() async {
+  // Ilovani ishga tushirish
+  // Bu funksiya ilovaning asosiy funksiyasi
   try {
     WidgetsFlutterBinding.ensureInitialized();
     await GetStorage.init();
@@ -53,9 +54,17 @@ Future<void> main() async {
 }
 
 Future<void> initServices() async {
-  // Servislarni ishga tushirish
+  // Bu funksiya ilovaning asosiy servislarini ishga tushirish uchun ishlatiladi
+
+  // Xavfsiz ma'lumotlarni saqlash xizmatini ishga tushirish
+  // (masalan: tokenlar, kalitlar va boshqa maxfiy ma'lumotlarni saqlash uchun)
   await Get.putAsync(() => SecureStorage().init());
+
+  // Internet aloqasini tekshirish xizmatini ishga tushirish
+  // (internetga ulanish bor yoki yo'qligini kuzatib borish uchun)
   await Get.putAsync(() => ConnectivityService().init());
+
+  // Push-bildirishnomalar xizmati (hozircha o'chirilgan)
   // await Get.putAsync(() => NotificationService().init());
 }
 
