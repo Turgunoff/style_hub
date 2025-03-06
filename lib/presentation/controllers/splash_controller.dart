@@ -2,9 +2,11 @@ import 'package:get/get.dart';
 import '../../core/utils/logger.dart';
 import '../routes/app_routes.dart';
 import '../../core/services/storage/secure_storage.dart';
+import '../../core/services/auth_service.dart';
 
 class SplashController extends GetxController {
   final SecureStorage _secureStorage = Get.find<SecureStorage>();
+  final AuthService _authService = Get.find<AuthService>();
   static const String _firstLaunchKey = 'first_launch_completed';
   final showSecondAnimation = false.obs;
   final isAnimationComplete = false.obs;
@@ -20,6 +22,9 @@ class SplashController extends GetxController {
     try {
       // Splash ekranida 3 sekund kutish
       await Future.delayed(const Duration(seconds: 3));
+
+      // Auth holatini tekshirish
+      await _authService.checkAuthStatus();
 
       // Keyingi ekranga o'tish
       if (await _isFirstLaunch()) {
