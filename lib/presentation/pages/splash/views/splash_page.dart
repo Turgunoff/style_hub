@@ -9,7 +9,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 // import 'package:get/get.dart';
 // import 'package:looksy/presentation/pages/splash/controllers/splash_controller.dart';
 
-import '../../../controllers/splash_controller.dart';
+import '../controller/splash_controller.dart';
 
 class SplashView extends GetView<SplashController> {
   const SplashView({super.key});

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '../../core/data/booking.dart';
+import '../../../../core/data/booking.dart';
 
 class BookingController extends GetxController {
   final selectedTabIndex = 0.obs; // Boshlang'ich qiymat 0 (Upcoming)

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import '../../../controllers/inbox_controller.dart';
+import '../controller/inbox_controller.dart';
 
 class InboxView extends GetView<InboxController> {
   const InboxView({super.key});

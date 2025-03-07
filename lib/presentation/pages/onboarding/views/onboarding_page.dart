@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:looksy/presentation/controllers/onboarding_controller.dart';
+import 'package:looksy/presentation/pages/onboarding/controller/onboarding_controller.dart';
 import 'package:looksy/presentation/routes/app_routes.dart';
 import 'package:lottie/lottie.dart';
 

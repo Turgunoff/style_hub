@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '../../../controllers/profile_details_controller.dart';
+import '../controller/profile_details_controller.dart';
 
 class ProfileDetailsBinding implements Bindings {
   @override

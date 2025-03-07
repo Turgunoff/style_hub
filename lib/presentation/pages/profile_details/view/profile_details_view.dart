@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import '../../../controllers/profile_details_controller.dart';
+import '../controller/profile_details_controller.dart';
 
 class ProfileDetailsView extends GetView<ProfileDetailsController> {
   const ProfileDetailsView({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../controllers/booking_controller.dart';
+import '../controller/booking_controller.dart';
 
 class BookingView extends GetView<BookingController> {
   const BookingView({super.key});

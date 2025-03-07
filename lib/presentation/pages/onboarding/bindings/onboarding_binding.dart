@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:looksy/presentation/controllers/onboarding_controller.dart';
+import 'package:looksy/presentation/pages/onboarding/controller/onboarding_controller.dart';
 
 class OnboardingBinding extends Bindings {
   @override

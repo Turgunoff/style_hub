@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/services/storage/secure_storage.dart';
-import '../../core/utils/logger.dart';
+import '../../../../core/services/storage/secure_storage.dart';
+import '../../../../core/utils/logger.dart';
 
 class OnboardingController extends GetxController {
   final pageController = PageController();

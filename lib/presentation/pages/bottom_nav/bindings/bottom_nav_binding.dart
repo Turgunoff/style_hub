@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:looksy/presentation/controllers/bottom_nav_controller.dart';
+import 'package:looksy/presentation/pages/bottom_nav/controller/bottom_nav_controller.dart';
 
 class BottomNavBinding extends Bindings {
   @override

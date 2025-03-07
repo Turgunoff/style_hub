@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../core/services/auth_service.dart';
+import '../../../../core/services/auth_service.dart';
 
 class ProfileController extends GetxController {
   final _authService = Get.find<AuthService>();
@@ -26,7 +26,7 @@ class ProfileController extends GetxController {
     isLoading.value = true;
     try {
       final userData = await _authService.getUserInfo();
-      userName.value = userData['name'] ?? '';
+      userName.value = userData['full_name'] ?? '';
       userEmail.value = userData['email'] ?? '';
       // Default rasm URL'i
       userImage.value =

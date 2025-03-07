@@ -1,9 +1,9 @@
 //create home controller
 
 import 'package:get/get.dart';
-import '../../../core/data/models.dart';
-import '../../../core/repositories/api_repository.dart';
-import '../../../core/utils/logger.dart';
+import '../../../../../core/data/models.dart';
+import '../../../../../core/repositories/api_repository.dart';
+import '../../../../../core/utils/logger.dart';
 
 class HomeController extends GetxController {
   // ===== ASOSIY O'ZGARUVCHILAR =====

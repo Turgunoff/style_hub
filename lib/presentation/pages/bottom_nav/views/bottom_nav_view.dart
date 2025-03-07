@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:looksy/presentation/controllers/bottom_nav_controller.dart';
+import 'package:looksy/presentation/pages/bottom_nav/controller/bottom_nav_controller.dart';
 
 class BottomNavView extends GetView<BottomNavController> {
   const BottomNavView({super.key});
