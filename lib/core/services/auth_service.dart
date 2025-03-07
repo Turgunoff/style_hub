@@ -20,7 +20,7 @@ class AuthService extends GetxService {
   final isLoading = true.obs;
   final isOnboardingCompleted = false.obs;
 
-  late Dio _dio;
+  // late Dio _dio;
 
   @override
   Future<void> onInit() async {
@@ -32,7 +32,7 @@ class AuthService extends GetxService {
     isAuthenticated.value = false;
     isLoading.value = false;
 
-    _dio = Dio();
+    // _dio = Dio();
   }
 
   // Auth holatini tekshirish
@@ -80,9 +80,10 @@ class AuthService extends GetxService {
   Future<Map<String, dynamic>> getUserInfo() async {
     try {
       final token = await _storage.read(key: _tokenKey);
-      debugPrint('Retrieved token: $token');
+      debugPrint('Retrieved token for /auth/me: $token');
 
       if (token == null) {
+        debugPrint('Token not found in storage');
         throw Exception('Token not found');
       }
 
@@ -90,18 +91,50 @@ class AuthService extends GetxService {
         Uri.parse('$_baseUrl/auth/me'),
         headers: {
           'Authorization': token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
         },
       );
 
-      debugPrint(
-          'GET /auth/me response: ${response.statusCode} - ${response.body}');
+      debugPrint('GET /auth/me Request headers: ${response.request?.headers}');
+      debugPrint('GET /auth/me Response status: ${response.statusCode}');
+      debugPrint('GET /auth/me Response body: ${response.body}');
 
       if (response.statusCode == 200) {
-        return json.decode(response.body);
+        final data = json.decode(response.body);
+        debugPrint('Parsed user data: $data');
+
+        final clientData = data['client'];
+        debugPrint('Client data: $clientData');
+
+        if (clientData == null) {
+          throw Exception('Client data not found in response');
+        }
+
+        debugPrint('User full_name: ${clientData['full_name']}');
+        debugPrint('User email: ${clientData['email']}');
+
+        // Ma'lumotlarni saqlash
+        await saveUserData(
+          token: token,
+          name: clientData['full_name'] ?? '',
+          email: clientData['email'] ?? '',
+          id: clientData['id']?.toString() ?? '',
+        );
+        return clientData;
       }
-      throw Exception('Failed to get user info');
+
+      if (response.statusCode == 401) {
+        debugPrint('Token expired or invalid');
+        // Token eskirgan yoki yaroqsiz
+        await logout();
+        throw Exception('Unauthorized');
+      }
+
+      debugPrint('Unexpected status code: ${response.statusCode}');
+      throw Exception('Failed to get user info: ${response.statusCode}');
     } catch (e) {
-      debugPrint('Error getting user info: $e');
+      debugPrint('Error in getUserInfo: $e');
       rethrow;
     }
   }
@@ -220,14 +253,8 @@ class AuthService extends GetxService {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = json.decode(response.body);
-        // Ro'yxatdan o'tgandan keyin foydalanuvchi ma'lumotlarini saqlash
-        await saveUserData(
-          token: '', // Token login qilganda olinadi
-          name: data['full_name'] ?? '',
-          email: data['email'] ?? '',
-          id: data['id']?.toString() ?? '',
-        );
-        isAuthenticated.value = true;
+        // Ro'yxatdan o'tish muvaffaqiyatli
+        debugPrint('Registration successful: $data');
         return (
           true,
           'Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Iltimos, tizimga kiring.'

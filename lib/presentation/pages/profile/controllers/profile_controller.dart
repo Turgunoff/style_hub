@@ -25,16 +25,47 @@ class ProfileController extends GetxController {
   Future<void> loadUserData() async {
     isLoading.value = true;
     try {
+      debugPrint('Starting to load user data...');
       final userData = await _authService.getUserInfo();
+      debugPrint('Received user data in ProfileController: $userData');
+
+      if (userData == null) {
+        throw Exception('User data is null');
+      }
+
       userName.value = userData['full_name'] ?? '';
+      debugPrint('Set userName.value to: ${userName.value}');
+
       userEmail.value = userData['email'] ?? '';
+      debugPrint('Set userEmail.value to: ${userEmail.value}');
+
       // Default rasm URL'i
-      userImage.value =
-          'https://ui-avatars.com/api/?name=${Uri.encodeComponent(userName.value)}&background=random';
-    } catch (e) {
-      debugPrint('Error loading user data: $e');
+      if (userData['avatar'] != null &&
+          userData['avatar'].toString().isNotEmpty) {
+        userImage.value = userData['avatar'];
+        debugPrint('Set userImage.value to avatar: ${userImage.value}');
+      } else {
+        userImage.value =
+            'https://ui-avatars.com/api/?name=${Uri.encodeComponent(userName.value)}&background=random';
+        debugPrint('Set userImage.value to default: ${userImage.value}');
+      }
+    } catch (e, stackTrace) {
+      debugPrint('Error in loadUserData: $e');
+      debugPrint('Stack trace: $stackTrace');
+      Get.snackbar(
+        'Xatolik',
+        'Ma\'lumotlarni yuklashda xatolik yuz berdi',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      isLoading.value = false;
+      debugPrint('Loading completed. Current values:');
+      debugPrint('userName: ${userName.value}');
+      debugPrint('userEmail: ${userEmail.value}');
+      debugPrint('userImage: ${userImage.value}');
     }
-    isLoading.value = false;
   }
 
   // Mavzuni o'zgartirish
