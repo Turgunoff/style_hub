@@ -10,6 +10,8 @@ class ProfileController extends GetxController {
   final userName = ''.obs;
   final userEmail = ''.obs;
   final userImage = ''.obs;
+
+  // Ilova sozlamalari
   final isDarkMode = false.obs;
   final isLoading = true.obs;
 
@@ -19,42 +21,47 @@ class ProfileController extends GetxController {
     loadUserData();
   }
 
+  // Foydalanuvchi ma'lumotlarini yuklash
   Future<void> loadUserData() async {
     isLoading.value = true;
     try {
-      final userData = await _authService.getUserData();
+      final userData = await _authService.getUserInfo();
       userName.value = userData['name'] ?? '';
       userEmail.value = userData['email'] ?? '';
-      userImage.value = 'https://example.com/default.jpg';
+      // Default rasm URL'i
+      userImage.value =
+          'https://ui-avatars.com/api/?name=${Uri.encodeComponent(userName.value)}&background=random';
     } catch (e) {
       debugPrint('Error loading user data: $e');
     }
     isLoading.value = false;
   }
 
+  // Mavzuni o'zgartirish
   void toggleTheme(bool value) {
     isDarkMode.value = value;
     Get.changeThemeMode(value ? ThemeMode.dark : ThemeMode.light);
   }
 
+  // Til tanlash dialogini ko'rsatish
   void showLanguageDialog() {
     Get.dialog(
       AlertDialog(
-        title: Text('select_language'.tr),
+        title: const Text('Tilni tanlang'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              title: const Text('English (US)'),
+              title: const Text('O\'zbek'),
               onTap: () {
-                Get.updateLocale(const Locale('en', 'US'));
+                Get.updateLocale(const Locale('uz', 'UZ'));
                 Get.back();
               },
             ),
             ListTile(
-              title: const Text('O\'zbek'),
+              title: const Text('English (US)'),
               onTap: () {
-                Get.updateLocale(const Locale('uz', 'UZ'));
+                Get.updateLocale(const Locale('en', 'US'));
                 Get.back();
               },
             ),
@@ -64,6 +71,7 @@ class ProfileController extends GetxController {
     );
   }
 
+  // Tizimdan chiqish dialogini ko'rsatish
   void showLogoutDialog() {
     Get.dialog(
       AlertDialog(
@@ -77,7 +85,7 @@ class ProfileController extends GetxController {
           TextButton(
             onPressed: () async {
               await _authService.logout();
-              Get.offAllNamed('/login');
+              Get.back(); // Dialog oynasini yopish
             },
             child: const Text(
               'Chiqish',
@@ -89,6 +97,7 @@ class ProfileController extends GetxController {
     );
   }
 
+  // Ilovani ulashish
   void shareApp() {
     Share.share('Bu ajoyib ilovani ko\'ring: https://example.com/app');
   }
