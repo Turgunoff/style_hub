@@ -11,23 +11,23 @@ class AuthService extends GetxService {
   static const String _userNameKey = 'user_name';
   static const String _userEmailKey = 'user_email';
   static const String _userIdKey = 'user_id';
-  // static const String _onboardingKey = 'onboarding_completed';  // Keyinchalik kerak bo'ladi
+  static const String _onboardingKey = 'onboarding_completed';
 
   static const String _baseUrl = 'http://159.223.43.76:7777/api/v1';
 
   // Auth holatini saqlash uchun
   final isAuthenticated = false.obs;
   final isLoading = true.obs;
-  // final isOnboardingCompleted = false.obs;  // Keyinchalik kerak bo'ladi
+  final isOnboardingCompleted = false.obs;
 
   late Dio _dio;
 
   @override
   Future<void> onInit() async {
     super.onInit();
-    // Keyinchalik kerak bo'ladi
-    // final onboardingCompleted = await _storage.read(key: _onboardingKey);
-    // isOnboardingCompleted.value = onboardingCompleted == 'true';
+    // Onboarding holatini tekshirish
+    final onboardingCompleted = await _storage.read(key: _onboardingKey);
+    isOnboardingCompleted.value = onboardingCompleted == 'true';
 
     isAuthenticated.value = false;
     isLoading.value = false;
@@ -106,13 +106,19 @@ class AuthService extends GetxService {
     }
   }
 
+  // Onboarding tugaganini saqlash
+  Future<void> completeOnboarding() async {
+    await _storage.write(key: _onboardingKey, value: 'true');
+    isOnboardingCompleted.value = true;
+  }
+
   // Tizimdan chiqish
   Future<void> logout() async {
     await _storage.deleteAll();
-    // Keyinchalik kerak bo'ladi
-    // if (isOnboardingCompleted.value) {
-    //   await _storage.write(key: _onboardingKey, value: 'true');
-    // }
+    // Onboarding holatini saqlab qolish
+    if (isOnboardingCompleted.value) {
+      await _storage.write(key: _onboardingKey, value: 'true');
+    }
     isAuthenticated.value = false;
   }
 

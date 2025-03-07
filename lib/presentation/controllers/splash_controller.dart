@@ -68,7 +68,7 @@ class SplashController extends GetxController {
   void onAnimationsComplete() {
     isAnimationComplete.value = true;
     // Animatsiyalar tugagandan so'ng 1 soniya kutib, keyingi ekranga o'tish
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 1), () {
       Get.offAllNamed(AppRoutes.ONBOARDING);
     });
   }
