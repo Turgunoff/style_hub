@@ -6,9 +6,7 @@ class HomeBinding extends Bindings {
   @override
   void dependencies() {
     //home lazy put
-    Get.lazyPut<HomeController>(
-      () => HomeController(),
-    );
+    Get.lazyPut(() => HomeController());
 
     // Get.put(HomeController());
     // Get.put(BookingController());

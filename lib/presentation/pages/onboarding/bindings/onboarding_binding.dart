@@ -5,7 +5,6 @@ import '../controller/onboarding_controller.dart';
 class OnboardingBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<OnboardingController>(
-        () => OnboardingController(Get.find<AuthService>()));
+    Get.lazyPut(() => OnboardingController(Get.find<AuthService>()));
   }
 }
