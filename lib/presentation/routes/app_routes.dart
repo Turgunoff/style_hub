@@ -1,10 +1,10 @@
 abstract class AppRoutes {
-  static const BOTTOM_NAV = '/bottom_nav';
-  static const SPLASH = '/splash';
-  static const HOME = '/home';
-  static const PROFILE = '/profile';
-  static const EXPLORE = '/explore';
-  static const ONBOARDING = '/onboarding';
-  static const BOOKING = '/booking';
-  static const PROFILE_DETAILS = '/profile_details';
+  static const bottomNav = '/bottom_nav';
+  static const splash = '/splash';
+  static const home = '/home';
+  static const profile = '/profile';
+  static const explore = '/explore';
+  static const onboarding = '/onboarding';
+  static const booking = '/booking';
+  static const profileDetails = '/profile_details';
 }

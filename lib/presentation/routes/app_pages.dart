@@ -18,37 +18,37 @@ import '../pages/profile_details/binding/profile_details_binding.dart';
 class AppPages {
   static final routes = [
     GetPage(
-      name: AppRoutes.BOTTOM_NAV,
+      name: AppRoutes.bottomNav,
       page: () => BottomNavView(),
       binding: BottomNavBinding(),
     ),
     GetPage(
-      name: AppRoutes.SPLASH,
+      name: AppRoutes.splash,
       page: () => const SplashView(),
       binding: SplashBinding(),
     ),
     GetPage(
-      name: AppRoutes.HOME,
+      name: AppRoutes.home,
       page: () => const HomeView(),
       binding: HomeBinding(),
     ),
     GetPage(
-      name: AppRoutes.EXPLORE,
+      name: AppRoutes.explore,
       page: () => const ExploreView(),
       binding: ExploreBinding(),
     ),
     GetPage(
-      name: AppRoutes.ONBOARDING,
+      name: AppRoutes.onboarding,
       page: () => OnboardingPage(),
       binding: OnboardingBinding(),
     ),
     GetPage(
-      name: AppRoutes.BOOKING,
+      name: AppRoutes.booking,
       page: () => const BookingView(),
       binding: BookingBinding(),
     ),
     GetPage(
-      name: AppRoutes.PROFILE_DETAILS,
+      name: AppRoutes.profileDetails,
       page: () => const ProfileDetailsView(),
       binding: ProfileDetailsBinding(),
     ),

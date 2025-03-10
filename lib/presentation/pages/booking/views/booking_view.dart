@@ -234,21 +234,21 @@ class BookingCard extends StatelessWidget {
                     onPressed: () {
                       // Add your view details action here
                     },
-                    child: Text('View Details'),
+                    child: const Text('View Details'),
                   )
                 else if (status == "Upcoming")
                   ElevatedButton(
                     onPressed: () {
                       // Add your cancel action here
                     },
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                   )
                 else if (status == "Cancelled")
                   ElevatedButton(
                     onPressed: () {
                       // Add your view details action here
                     },
-                    child: Text('View Details'),
+                    child: const Text('View Details'),
                   ),
               ],
             )

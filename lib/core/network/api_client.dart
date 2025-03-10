@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import '../config/api_config.dart';
 import '../utils/logger.dart';
 
@@ -24,12 +23,12 @@ class ApiClient {
 
     // Interceptorlar
     _dio.interceptors.clear();
-    // TODO: API logs vaqtincha o'chirildi
-    // _dio.interceptors.add(LogInterceptor(
-    //   requestBody: true,
-    //   responseBody: true,
-    //   logPrint: (obj) => debugPrint(obj.toString()),
-    // ));
+    //API logs vaqtincha o'chirildi
+    /*  _dio.interceptors.add(LogInterceptor(
+      requestBody: true,
+      responseBody: true,
+      logPrint: (obj) => debugPrint(obj.toString()),
+    ));*/
   }
 
   /// GET so'rovi

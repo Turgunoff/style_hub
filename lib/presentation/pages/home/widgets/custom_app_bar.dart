@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -8,18 +7,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
+      title: const Text(
         'Style Hub',
       ),
       actions: [
         IconButton(
-          icon: Icon(IconsaxPlusLinear.message),
+          icon: const Icon(IconsaxPlusLinear.message),
           onPressed: () {
             // Navigate to messages screen
           },
         ),
         IconButton(
-          icon: Icon(IconsaxPlusLinear.notification),
+          icon: const Icon(IconsaxPlusLinear.notification),
           onPressed: () {
             // Get.to(SearchView());
           },
@@ -30,5 +29,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

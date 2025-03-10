@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:looksy/presentation/pages/home/controller/home_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -61,19 +60,19 @@ class TopCategories extends StatelessWidget {
                   switch (
                       controller.barberSortedCategories.indexOf(category) % 4) {
                     case 0:
-                      categoryColor = Color(0xFFFADBEC); // Pushti
+                      categoryColor = const Color(0xFFFADBEC); // Pushti
                       break;
                     case 1:
-                      categoryColor = Color(0xFFEDDBFF); // Och binafsha
+                      categoryColor = const Color(0xFFEDDBFF); // Och binafsha
                       break;
                     case 2:
-                      categoryColor = Color(0xFFCAE0FD); // Och ko'k
+                      categoryColor = const Color(0xFFCAE0FD); // Och ko'k
                       break;
                     case 3:
-                      categoryColor = Color(0xFFCEFCDC); // Och yashil
+                      categoryColor = const Color(0xFFCEFCDC); // Och yashil
                       break;
                     default:
-                      categoryColor = Color(0xFFFADBEC);
+                      categoryColor = const Color(0xFFFADBEC);
                   }
 
                   return SizedBox(
@@ -84,7 +83,7 @@ class TopCategories extends StatelessWidget {
                         Container(
                           height: 64,
                           width: 64,
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: categoryColor,
                             borderRadius: BorderRadius.circular(100),
@@ -100,12 +99,13 @@ class TopCategories extends StatelessWidget {
                                   memCacheHeight: 64,
                                   maxWidthDiskCache: 64,
                                   maxHeightDiskCache: 64,
-                                  placeholder: (context, url) => Icon(
+                                  placeholder: (context, url) => const Icon(
                                     IconsaxPlusLinear.scissor,
                                     size: 24,
                                     color: Colors.grey,
                                   ),
-                                  errorWidget: (context, url, error) => Icon(
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(
                                     IconsaxPlusLinear.scissor,
                                     size: 24,
                                   ),

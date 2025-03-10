@@ -90,9 +90,8 @@ class MyApp extends StatelessWidget {
       translations: AppLocalization(),
       locale: const Locale('uz', 'UZ'), // Boshlang'ich til
       fallbackLocale: const Locale('en', 'US'), // Zaxira til
-
       // Routing
-      initialRoute: AppRoutes.SPLASH,
+      initialRoute: AppRoutes.splash, // Changed from SPLASH to splash
       getPages: AppPages.routes,
 
       // Initial binding

@@ -27,19 +27,19 @@ class BannerCarousel extends StatelessWidget {
           return Center(
             child: Text(
               controller.error.value,
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
           );
         }
 
         if (controller.banners.isEmpty) {
-          return Center(
+          return const Center(
             child: Text('No banners available'),
           );
         }
 
         return CarouselSlider(
-          slideTransform: DefaultTransform(),
+          slideTransform: const DefaultTransform(),
           enableAutoSlider: true,
           unlimitedMode: true,
           slideIndicator: CircularSlideIndicator(
@@ -49,9 +49,9 @@ class BannerCarousel extends StatelessWidget {
             itemSpacing: 12,
             indicatorBorderWidth: 0,
             indicatorBorderColor: Colors.transparent,
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
           ),
-          autoSliderDelay: Duration(seconds: 5),
+          autoSliderDelay: const Duration(seconds: 5),
           children: controller.banners
               .where((banner) => banner.isActive)
               .map((banner) => _buildCarouselItem(
@@ -78,7 +78,7 @@ class BannerCarousel extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -104,7 +104,7 @@ class BannerCarousel extends StatelessWidget {
                 ),
                 errorWidget: (context, url, error) => Container(
                   color: Colors.grey[300],
-                  child: Icon(Icons.error),
+                  child: const Icon(Icons.error),
                 ),
               ),
             ),

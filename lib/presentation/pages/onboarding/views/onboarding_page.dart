@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:looksy/presentation/pages/onboarding/controller/onboarding_controller.dart';
 import 'package:looksy/presentation/routes/app_routes.dart';
 import 'package:lottie/lottie.dart';
@@ -9,25 +8,25 @@ class OnboardingPage extends GetView<OnboardingController> {
   OnboardingPage({super.key});
 
   final List<OnboardingContent> pages = [
-    OnboardingContent(
+    const OnboardingContent(
       title: 'Looksy\'ga Xush Kelibsiz',
       description:
           'Eng yaxshi sartaroshlarni qidirib toping va o\'zingizga ma\'qul bo\'lgan uslubni tanlang.',
       image: 'assets/animations/barber_animation.json',
-      color: const Color(0xFF4A80F0),
+      color: Color(0xFF4A80F0),
     ),
-    OnboardingContent(
+    const OnboardingContent(
       title: 'Vaqtni tejang',
       description: 'Qulay vaqt va joyni tanlang. Navbatda kutib turmang.',
       image: 'assets/animations/time_animation.json',
-      color: const Color(0xFF7960F9),
+      color: Color(0xFF7960F9),
     ),
-    OnboardingContent(
+    const OnboardingContent(
       title: 'Yuqori sifat',
       description:
           'Faqat eng yaxshi sartaroshlar. Sifat bizning ustuvorligimiz.',
       image: 'assets/animations/quality_animation.json',
-      color: const Color(0xFF5CC596),
+      color: Color(0xFF5CC596),
     ),
   ];
 
@@ -142,7 +141,7 @@ class OnboardingPage extends GetView<OnboardingController> {
                                       pages.length - 1
                                   ? 'O\'tkazib yuborish'
                                   : '',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -165,7 +164,7 @@ class OnboardingPage extends GetView<OnboardingController> {
                               // Onboarding tugallanganini saqlash
                               controller.completeOnboarding();
                               // Asosiy ekranga o'tish
-                              Get.offAllNamed(AppRoutes.BOTTOM_NAV);
+                              Get.offAllNamed(AppRoutes.bottomNav);
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -247,7 +246,7 @@ class OnboardingPage extends GetView<OnboardingController> {
               fontSize: 18,
               color: Colors.white.withOpacity(0.9),
               height: 1.5,
-              shadows: [
+              shadows: const [
                 Shadow(
                   color: Colors.black12,
                   offset: Offset(0, 1),

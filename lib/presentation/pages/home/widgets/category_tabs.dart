@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:looksy/presentation/pages/home/controller/home_controller.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class CategoryTabs extends StatelessWidget {
   final HomeController controller;
@@ -97,7 +95,7 @@ class CategoryTabs extends StatelessWidget {
                           ),
                           child: Center(
                             child: Text(
-                              category.name ?? '',
+                              category.name,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium

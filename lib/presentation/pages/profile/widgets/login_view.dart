@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'login_bottom_sheet.dart';
 
@@ -53,7 +52,7 @@ class LoginView extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton.icon(
-                      onPressed: () => LoginBottomSheet().show(context),
+                      onPressed: () => const LoginBottomSheet().show(context),
                       style: FilledButton.styleFrom(
                         padding: const EdgeInsets.all(16),
                         shape: RoundedRectangleBorder(

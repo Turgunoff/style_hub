@@ -20,7 +20,7 @@ class ShimmerLoading extends StatelessWidget {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
-      child: ShimmerLayout(),
+      child: const ShimmerLayout(),
     );
   }
 }
@@ -32,7 +32,6 @@ class ShimmerLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     // Ekran o'lchamlarini olish
     final size = MediaQuery.of(context).size;
-    final screenPadding = MediaQuery.of(context).padding;
 
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),

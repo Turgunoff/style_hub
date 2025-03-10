@@ -44,7 +44,7 @@ class SplashView extends GetView<SplashController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Logo animatsiyasi
-                  Expanded(
+                  const Expanded(
                     flex: 3,
                     child: Center(
                       child: SpinKitFadingCircle(
@@ -121,7 +121,7 @@ class SplashView extends GetView<SplashController> {
                   ),
 
                   // Loading animatsiyasi
-                  Expanded(
+                  const Expanded(
                     child: Center(
                       child: SpinKitWave(
                         color: Colors.white,

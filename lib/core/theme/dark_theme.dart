@@ -15,9 +15,9 @@ final darkTheme = ThemeData(
       error: Colors.redAccent,
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: Color(0xFFF36C00),
+      backgroundColor: const Color(0xFFF36C00),
       foregroundColor: Colors.white,
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
       titleTextStyle: GoogleFonts.manrope(
         color: Colors.white,
         fontSize: 20,
@@ -71,7 +71,7 @@ final darkTheme = ThemeData(
         fontWeight: FontWeight.w600,
       ),
       titleMedium: GoogleFonts.manrope(
-        color: Color(0xFFE0E0E0),
+        color: const Color(0xFFE0E0E0),
         fontSize: 16,
         fontWeight: FontWeight.w500,
       ),
@@ -98,7 +98,7 @@ final darkTheme = ThemeData(
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFFF36C00),
+        backgroundColor: const Color(0xFFF36C00),
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 3,
@@ -122,7 +122,7 @@ final darkTheme = ThemeData(
       ),
     ),
     cardTheme: CardTheme(
-      color: Color(0xFF1E1E1E),
+      color: const Color(0xFF1E1E1E),
       shadowColor: Colors.black54,
       elevation: 1,
       shape: RoundedRectangleBorder(

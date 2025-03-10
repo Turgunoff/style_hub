@@ -86,7 +86,7 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
                           color: Theme.of(context).colorScheme.primary,
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Open',
                           style: TextStyle(color: Colors.white),
                         ),
@@ -97,7 +97,7 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
                   // Address
                   Row(
                     children: [
-                      Icon(IconsaxPlusLinear.location,
+                      const Icon(IconsaxPlusLinear.location,
                           color: Colors.grey, size: 20),
                       const SizedBox(width: 8),
                       Text(
@@ -110,7 +110,7 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
                   // Rating
                   Row(
                     children: [
-                      Icon(IconsaxPlusLinear.star,
+                      const Icon(IconsaxPlusLinear.star,
                           color: Colors.amber, size: 20),
                       const SizedBox(width: 8),
                       Text(
@@ -171,7 +171,7 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
                       ),
                       TextButton(
                         onPressed: () {},
-                        child: Text('See All'),
+                        child: const Text('See All'),
                       ),
                     ],
                   ),
@@ -224,7 +224,7 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
                                 Theme.of(context).colorScheme.primary,
                             foregroundColor: Colors.white,
                           ),
-                          child: Text('About us'),
+                          child: const Text('About us'),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -235,7 +235,7 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
                             foregroundColor:
                                 Theme.of(context).colorScheme.primary,
                           ),
-                          child: Text('Services'),
+                          child: const Text('Services'),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -246,7 +246,7 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
                             foregroundColor:
                                 Theme.of(context).colorScheme.primary,
                           ),
-                          child: Text('Package'),
+                          child: const Text('Package'),
                         ),
                       ),
                     ],
@@ -259,7 +259,7 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
                   ),
                   TextButton(
                     onPressed: () {},
-                    child: Text('Read more...'),
+                    child: const Text('Read more...'),
                   ),
                   const SizedBox(height: 24),
                   // Working Hours
@@ -303,7 +303,7 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
                       ),
                       TextButton(
                         onPressed: () {},
-                        child: Text('See on Maps'),
+                        child: const Text('See on Maps'),
                       ),
                     ],
                   ),
@@ -338,7 +338,7 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 16),
           ),
-          child: Text('Book Now'),
+          child: const Text('Book Now'),
         ),
       ),
     );

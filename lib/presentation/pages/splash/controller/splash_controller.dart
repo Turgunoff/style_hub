@@ -26,16 +26,16 @@ class SplashController extends GetxController {
 
     if (!_authService.isOnboardingCompleted.value) {
       AppLogger.info('Navigating to onboarding screen');
-      Get.offAllNamed(AppRoutes.ONBOARDING);
+      Get.offAllNamed(AppRoutes.onboarding);
       return;
     }
 
     if (_authService.isAuthenticated.value) {
       AppLogger.info('User is authenticated, navigating to main screen');
-      Get.offAllNamed(AppRoutes.BOTTOM_NAV);
+      Get.offAllNamed(AppRoutes.bottomNav);
     } else {
       AppLogger.info('User is not authenticated, navigating to login screen');
-      Get.offAllNamed(AppRoutes.BOTTOM_NAV);
+      Get.offAllNamed(AppRoutes.bottomNav);
     }
   }
 
