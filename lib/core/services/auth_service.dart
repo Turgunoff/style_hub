@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import '../utils/logger.dart';
+import '../config/env_config.dart';
 
 class AuthService extends GetxService {
   final _storage = const FlutterSecureStorage();
@@ -13,8 +14,6 @@ class AuthService extends GetxService {
   static const String _userEmailKey = 'user_email';
   static const String _userIdKey = 'user_id';
   static const String _onboardingKey = 'onboarding_completed';
-
-  static const String _baseUrl = 'http://159.223.43.76:7777/api/v1';
 
   // Auth holatini saqlash uchun
   final isAuthenticated = false.obs;
@@ -41,6 +40,8 @@ class AuthService extends GetxService {
     isLoading.value = true;
     try {
       final token = await _storage.read(key: _tokenKey);
+      AppLogger.debug('Stored token: $token');
+
       if (token == null) {
         isAuthenticated.value = false;
         AppLogger.info('User is not authenticated');
@@ -64,6 +65,7 @@ class AuthService extends GetxService {
     required String email,
     required String id,
   }) async {
+    AppLogger.debug('Saving token: $token');
     AppLogger.debug('Saving user data: name=$name, email=$email, id=$id');
     await _storage.write(key: _tokenKey, value: token);
     await _storage.write(key: _userNameKey, value: name);
@@ -82,7 +84,7 @@ class AuthService extends GetxService {
       }
 
       final response = await http.get(
-        Uri.parse('$_baseUrl/auth/me'),
+        Uri.parse('${EnvConfig.apiBaseUrl}/auth/me'),
         headers: {
           'Authorization': token,
           'Accept': 'application/json',
@@ -149,7 +151,7 @@ class AuthService extends GetxService {
   // Login
   Future<(bool, String)> login(String email, String password) async {
     isLoading.value = true;
-    final url = Uri.parse('$_baseUrl/auth/token');
+    final url = Uri.parse('${EnvConfig.apiBaseUrl}/auth/token');
     try {
       AppLogger.debug('Attempting login for user: $email');
 
@@ -172,12 +174,17 @@ class AuthService extends GetxService {
         final clientData = data['client'];
         final tokenType = data['token_type'];
 
+        AppLogger.debug('Received token type: $tokenType');
+        AppLogger.debug('Received access token: $token');
+
         if (token == null || clientData == null) {
           AppLogger.error('Token or client data missing in response');
           return (false, 'Token yoki foydalanuvchi ma\'lumotlari topilmadi');
         }
 
         final fullToken = '$tokenType $token';
+        AppLogger.debug('Created full token: $fullToken');
+
         await saveUserData(
           token: fullToken,
           name: clientData['full_name'] ?? '',
@@ -216,7 +223,7 @@ class AuthService extends GetxService {
     required String fullName,
   }) async {
     isLoading.value = true;
-    final url = Uri.parse('$_baseUrl/clients/');
+    final url = Uri.parse('${EnvConfig.apiBaseUrl}/clients/');
     try {
       AppLogger.debug('Attempting registration for user: $email');
 

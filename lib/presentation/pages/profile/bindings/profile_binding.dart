@@ -5,7 +5,7 @@ import '../controllers/profile_controller.dart';
 class ProfileBinding extends Bindings {
   @override
   void dependencies() {
-    // Get.put(ProfileController(Get.find<AuthService>()));
-    Get.lazyPut(() => ProfileController(Get.find<AuthService>()));
+    Get.put(ProfileController(Get.find<AuthService>()));
+    // Get.lazyPut(() => ProfileController(Get.find<AuthService>()));
   }
 }
