@@ -1,27 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../core/services/storage/secure_storage.dart';
+import '../../../../core/services/auth_service.dart';
 import '../../../../core/utils/logger.dart';
 
 class OnboardingController extends GetxController {
-  final pageController = PageController();
+  final AuthService _authService;
   final currentPageIndex = 0.obs;
-  final SecureStorage _secureStorage = Get.find<SecureStorage>();
-  static const String _firstLaunchKey = 'first_launch_completed';
+  final PageController pageController = PageController();
+
+  OnboardingController(this._authService);
+
+  @override
+  void onInit() {
+    super.onInit();
+    AppLogger.debug('Initializing OnboardingController');
+  }
 
   @override
   void onClose() {
+    AppLogger.debug('Disposing OnboardingController');
     pageController.dispose();
     super.onClose();
   }
 
-  // Onboarding tugagandan so'ng storage'ga birinchi marta ishga tushirilganini saqlash
   Future<void> completeOnboarding() async {
+    AppLogger.debug('Completing onboarding process');
     try {
-      await _secureStorage.writeData(key: _firstLaunchKey, value: "true");
+      await _authService.completeOnboarding();
       AppLogger.info('Onboarding completed and saved to storage');
     } catch (e) {
-      AppLogger.error('Error saving onboarding completion: $e');
+      AppLogger.error('Error saving onboarding status: $e');
     }
   }
 }

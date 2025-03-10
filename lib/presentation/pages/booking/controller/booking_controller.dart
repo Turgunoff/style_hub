@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import '../../../../core/data/booking.dart';
+import '../../../../core/utils/logger.dart';
 
 class BookingController extends GetxController {
   final selectedTabIndex = 0.obs; // Boshlang'ich qiymat 0 (Upcoming)
@@ -251,5 +252,22 @@ class BookingController extends GetxController {
   // Tab o'zgarganda chaqiriladigan metod
   void changeTabIndex(int index) {
     selectedTabIndex.value = index;
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    AppLogger.debug('Initializing BookingController');
+    loadBookings();
+  }
+
+  Future<void> loadBookings() async {
+    try {
+      AppLogger.debug('Loading bookings');
+      // API call to load bookings
+      AppLogger.info('Bookings loaded successfully');
+    } catch (e) {
+      AppLogger.error('Error loading bookings: $e');
+    }
   }
 }

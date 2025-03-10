@@ -24,14 +24,12 @@ class ApiClient {
 
     // Interceptorlar
     _dio.interceptors.clear();
-
-    // Debug mode da log qo'shish
-    if (kDebugMode) {
-      _dio.interceptors.add(LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-      ));
-    }
+    // TODO: API logs vaqtincha o'chirildi
+    // _dio.interceptors.add(LogInterceptor(
+    //   requestBody: true,
+    //   responseBody: true,
+    //   logPrint: (obj) => debugPrint(obj.toString()),
+    // ));
   }
 
   /// GET so'rovi

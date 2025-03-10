@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
+import '../utils/logger.dart';
 
 class AuthService extends GetxService {
   final _storage = const FlutterSecureStorage();
@@ -42,19 +43,14 @@ class AuthService extends GetxService {
       final token = await _storage.read(key: _tokenKey);
       if (token == null) {
         isAuthenticated.value = false;
+        AppLogger.info('User is not authenticated');
         return;
       }
 
-      final userData = await getUserInfo();
-      await saveUserData(
-        token: token,
-        name: userData['full_name'] ?? '',
-        email: userData['email'] ?? '',
-        id: userData['id']?.toString() ?? '',
-      );
+      await getUserInfo();
       isAuthenticated.value = true;
     } catch (e) {
-      debugPrint('Error checking auth status: $e');
+      AppLogger.error('Error checking auth status: $e');
       await logout();
     } finally {
       isLoading.value = false;
@@ -68,23 +64,21 @@ class AuthService extends GetxService {
     required String email,
     required String id,
   }) async {
-    debugPrint('Saving token: $token');
+    AppLogger.debug('Saving user data: name=$name, email=$email, id=$id');
     await _storage.write(key: _tokenKey, value: token);
     await _storage.write(key: _userNameKey, value: name);
     await _storage.write(key: _userEmailKey, value: email);
     await _storage.write(key: _userIdKey, value: id);
     isAuthenticated.value = true;
+    AppLogger.info('User data saved successfully');
   }
 
   // Foydalanuvchi ma'lumotlarini olish
-  Future<Map<String, dynamic>> getUserInfo() async {
+  Future<Map<String, dynamic>?> getUserInfo() async {
     try {
       final token = await _storage.read(key: _tokenKey);
-      debugPrint('Retrieved token for /auth/me: $token');
-
       if (token == null) {
-        debugPrint('Token not found in storage');
-        throw Exception('Token not found');
+        return null;
       }
 
       final response = await http.get(
@@ -96,25 +90,20 @@ class AuthService extends GetxService {
         },
       );
 
-      debugPrint('GET /auth/me Request headers: ${response.request?.headers}');
-      debugPrint('GET /auth/me Response status: ${response.statusCode}');
-      debugPrint('GET /auth/me Response body: ${response.body}');
+      AppLogger.debug('GET /auth/me Response status: ${response.statusCode}');
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        debugPrint('Parsed user data: $data');
-
         final clientData = data['client'];
-        debugPrint('Client data: $clientData');
 
         if (clientData == null) {
-          throw Exception('Client data not found in response');
+          AppLogger.warning('Client data not found in response');
+          return null;
         }
 
-        debugPrint('User full_name: ${clientData['full_name']}');
-        debugPrint('User email: ${clientData['email']}');
+        AppLogger.info('User info retrieved successfully');
+        AppLogger.debug('User data: ${json.encode(clientData)}');
 
-        // Ma'lumotlarni saqlash
         await saveUserData(
           token: token,
           name: clientData['full_name'] ?? '',
@@ -125,17 +114,16 @@ class AuthService extends GetxService {
       }
 
       if (response.statusCode == 401) {
-        debugPrint('Token expired or invalid');
-        // Token eskirgan yoki yaroqsiz
+        AppLogger.info('Token expired or invalid');
         await logout();
-        throw Exception('Unauthorized');
+        return null;
       }
 
-      debugPrint('Unexpected status code: ${response.statusCode}');
-      throw Exception('Failed to get user info: ${response.statusCode}');
+      AppLogger.error('Failed to get user info: ${response.statusCode}');
+      return null;
     } catch (e) {
-      debugPrint('Error in getUserInfo: $e');
-      rethrow;
+      AppLogger.error('Error in getUserInfo: $e');
+      return null;
     }
   }
 
@@ -147,12 +135,15 @@ class AuthService extends GetxService {
 
   // Tizimdan chiqish
   Future<void> logout() async {
+    AppLogger.info('Logging out user');
     await _storage.deleteAll();
     // Onboarding holatini saqlab qolish
     if (isOnboardingCompleted.value) {
       await _storage.write(key: _onboardingKey, value: 'true');
+      AppLogger.debug('Preserved onboarding status after logout');
     }
     isAuthenticated.value = false;
+    AppLogger.info('User logged out successfully');
   }
 
   // Login
@@ -160,8 +151,7 @@ class AuthService extends GetxService {
     isLoading.value = true;
     final url = Uri.parse('$_baseUrl/auth/token');
     try {
-      debugPrint('Making POST request to: $url');
-      debugPrint('Request body: username=$email&password=$password');
+      AppLogger.debug('Attempting login for user: $email');
 
       final response = await http.post(
         url,
@@ -174,9 +164,7 @@ class AuthService extends GetxService {
         },
       );
 
-      debugPrint('Response status: ${response.statusCode}');
-      debugPrint('Response headers: ${response.headers}');
-      debugPrint('Response body: ${response.body}');
+      AppLogger.debug('Login response status: ${response.statusCode}');
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -184,9 +172,8 @@ class AuthService extends GetxService {
         final clientData = data['client'];
         final tokenType = data['token_type'];
 
-        debugPrint('Received token: $tokenType $token');
-
         if (token == null || clientData == null) {
+          AppLogger.error('Token or client data missing in response');
           return (false, 'Token yoki foydalanuvchi ma\'lumotlari topilmadi');
         }
 
@@ -199,27 +186,30 @@ class AuthService extends GetxService {
         );
 
         isAuthenticated.value = true;
+        AppLogger.info('User logged in successfully');
         return (true, 'Muvaffaqiyatli tizimga kirdingiz!');
       }
 
       if (response.statusCode == 400 || response.statusCode == 401) {
         final data = json.decode(response.body);
+        AppLogger.warning('Login failed: Invalid credentials');
         return (
           false,
           (data['detail'] ?? 'Email yoki parol noto\'g\'ri').toString()
         );
       }
 
+      AppLogger.error('Server error during login: ${response.statusCode}');
       return (false, 'Server error: ${response.statusCode}');
     } catch (e, stackTrace) {
-      debugPrint('Login error: $e');
-      debugPrint('Stack trace: $stackTrace');
+      AppLogger.error('Login error: $e\n$stackTrace');
       return (false, e.toString());
     } finally {
       isLoading.value = false;
     }
   }
 
+  // Register
   Future<(bool, String)> register({
     required String email,
     required String password,
@@ -228,14 +218,7 @@ class AuthService extends GetxService {
     isLoading.value = true;
     final url = Uri.parse('$_baseUrl/clients/');
     try {
-      final requestBody = {
-        'email': email,
-        'password': password,
-        'full_name': fullName,
-      };
-      debugPrint('Making POST request to: $url');
-      debugPrint(
-          'Request body: ${JsonEncoder.withIndent('  ').convert(requestBody)}');
+      AppLogger.debug('Attempting registration for user: $email');
 
       final response = await http.post(
         url,
@@ -243,18 +226,17 @@ class AuthService extends GetxService {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: json.encode(requestBody),
+        body: json.encode({
+          'email': email,
+          'password': password,
+          'full_name': fullName,
+        }),
       );
 
-      debugPrint('Response status: ${response.statusCode}');
-      debugPrint('Response headers: ${response.headers}');
-      debugPrint(
-          'Response body: ${response.body.isNotEmpty ? JsonEncoder.withIndent('  ').convert(json.decode(response.body)) : 'Empty response'}');
+      AppLogger.debug('Registration response status: ${response.statusCode}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final data = json.decode(response.body);
-        // Ro'yxatdan o'tish muvaffaqiyatli
-        debugPrint('Registration successful: $data');
+        AppLogger.info('User registered successfully');
         return (
           true,
           'Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Iltimos, tizimga kiring.'
@@ -263,13 +245,15 @@ class AuthService extends GetxService {
 
       if (response.statusCode == 400) {
         final data = json.decode(response.body);
+        AppLogger.warning('Registration failed: ${data['message']}');
         return (false, (data['message'] ?? 'Bad request').toString());
       }
 
+      AppLogger.error(
+          'Server error during registration: ${response.statusCode}');
       return (false, 'Server error: ${response.statusCode}');
     } catch (e, stackTrace) {
-      debugPrint('Registration error: $e');
-      debugPrint('Stack trace: $stackTrace');
+      AppLogger.error('Registration error: $e\n$stackTrace');
       return (false, e.toString());
     } finally {
       isLoading.value = false;

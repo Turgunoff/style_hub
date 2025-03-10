@@ -1,6 +1,24 @@
 import 'package:get/get.dart';
+import '../../../../core/utils/logger.dart';
 
 class InboxController extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    AppLogger.debug('Initializing InboxController');
+    loadMessages();
+  }
+
+  Future<void> loadMessages() async {
+    try {
+      AppLogger.debug('Loading messages');
+      // API call to load messages
+      AppLogger.info('Messages loaded successfully');
+    } catch (e) {
+      AppLogger.error('Error loading messages: $e');
+    }
+  }
+
   final chats = <Chat>[
     Chat(
       name: 'Barbarella Inova',

@@ -53,6 +53,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    AppLogger.debug('Initializing HomeController');
     _initializeData();
     _setupCategoryWatcher();
   }
@@ -94,6 +95,7 @@ class HomeController extends GetxController {
       isCategoriesLoading.value = true;
       categoriesError.value = '';
 
+      AppLogger.debug('Loading categories');
       final retrievedCategories = await _apiRepository.getCategories();
       _processCategories(retrievedCategories);
     } catch (e) {
@@ -267,6 +269,7 @@ class HomeController extends GetxController {
       isBarbersLoading.value = true;
       barbersError.value = '';
 
+      AppLogger.debug('Loading barbers');
       barbers.value = await _apiRepository.getBarbers();
     } catch (e) {
       barbersError.value = 'Barberlarni yuklashda xatolik: $e';
@@ -435,7 +438,10 @@ class HomeController extends GetxController {
       isLoading.value = true;
       error.value = '';
 
-      banners.value = await _apiRepository.getBanners();
+      AppLogger.debug('Loading banners');
+      final result = await _apiRepository.getBanners();
+      banners.value = result;
+      AppLogger.info('Banners loaded successfully: ${banners.length} items');
     } catch (e) {
       error.value = 'Bannerlarni yuklashda xatolik: $e';
       print('Bannerlarni yuklashda xatolik: $e');
