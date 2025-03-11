@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../controller/barber_details_controller.dart';
 
 class BarberDetailsView extends GetView<BarberDetailsController> {
@@ -10,7 +11,48 @@ class BarberDetailsView extends GetView<BarberDetailsController> {
     return Scaffold(
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          // Display placeholder that matches hero widget for smooth transition
+          return Column(
+            children: [
+              SizedBox(
+                height: 250,
+                width: double.infinity,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    // Show placeholder with Hero
+                    Hero(
+                      tag: 'barber_${controller.id.value}',
+                      child: Container(
+                        color: Colors.grey[300],
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ),
+                    // Gradient overlay
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.center,
+                          colors: [
+                            Colors.black.withOpacity(0.7),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Expanded(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ],
+          );
         }
 
         if (controller.error.value.isNotEmpty) {
@@ -64,40 +106,71 @@ class BarberDetailsView extends GetView<BarberDetailsController> {
       expandedHeight: 250,
       floating: false,
       pinned: true,
-      flexibleSpace: FlexibleSpaceBar(
-        background: Stack(
-          fit: StackFit.expand,
-          children: [
-            // Barber cover image
-            Hero(
-              tag: 'barber_${controller.id.value}',
-              child: Image.network(
-                controller.barberImage.value,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.person, size: 100),
-                  );
-                },
+      // Show barber name in AppBar when scrolled
+      title: Obx(() => AnimatedOpacity(
+            opacity: controller.isScrolled.value ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 300),
+            child: Text(
+              controller.barberName.value,
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
               ),
             ),
+          )),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      elevation: 0,
+      stretch: true,
+      flexibleSpace: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          // Update scroll state for title animation
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            // When space bar is smaller than 80% of full size, consider it scrolled
+            controller.isScrolled.value =
+                constraints.maxHeight < kToolbarHeight * 1.8;
+          });
 
-            // Gradient overlay for better visibility of back button
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.center,
-                  colors: [
-                    Colors.black.withOpacity(0.7),
-                    Colors.transparent,
-                  ],
+          return FlexibleSpaceBar(
+            background: Stack(
+              fit: StackFit.expand,
+              children: [
+                // Barber cover image
+                Hero(
+                  tag: 'barber_${controller.id.value}',
+                  child: CachedNetworkImage(
+                    imageUrl: controller.barberImage.value,
+                    fit: BoxFit.cover,
+                    // Reduce loading placeholder to improve animation
+                    cacheKey: 'barber_${controller.id.value}',
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey[300],
+                    ),
+                    errorWidget: (context, error, stackTrace) {
+                      return Container(
+                        color: Colors.grey[300],
+                        child: const Icon(Icons.person, size: 100),
+                      );
+                    },
+                  ),
                 ),
-              ),
+
+                // Gradient overlay for better visibility of back button
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.center,
+                      colors: [
+                        Colors.black.withOpacity(0.7),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
       leading: IconButton(
         icon: Container(

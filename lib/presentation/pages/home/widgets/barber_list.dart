@@ -82,28 +82,31 @@ class BarberList extends StatelessWidget {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
-                                child: CachedNetworkImage(
-                                  imageUrl: barber.imageUrl,
-                                  width: 80,
-                                  height: 80,
-                                  fit: BoxFit.cover,
-                                  cacheKey: 'barber_${barber.id}',
-                                  memCacheWidth: 160,
-                                  memCacheHeight: 160,
-                                  maxWidthDiskCache: 160,
-                                  maxHeightDiskCache: 160,
-                                  placeholder: (context, url) =>
-                                      Shimmer.fromColors(
-                                    baseColor: Colors.grey[300]!,
-                                    highlightColor: Colors.grey[100]!,
-                                    child: Container(
-                                      color: Colors.white,
+                                child: Hero(
+                                  tag: 'barber_${barber.id}',
+                                  child: CachedNetworkImage(
+                                    imageUrl: barber.imageUrl,
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                    cacheKey: 'barber_${barber.id}',
+                                    memCacheWidth: 160,
+                                    memCacheHeight: 160,
+                                    maxWidthDiskCache: 160,
+                                    maxHeightDiskCache: 160,
+                                    placeholder: (context, url) =>
+                                        Shimmer.fromColors(
+                                      baseColor: Colors.grey[300]!,
+                                      highlightColor: Colors.grey[100]!,
+                                      child: Container(
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                  errorWidget: (context, url, error) =>
-                                      Container(
-                                    color: Colors.grey[300],
-                                    child: const Icon(Icons.person),
+                                    errorWidget: (context, url, error) =>
+                                        Container(
+                                      color: Colors.grey[300],
+                                      child: const Icon(Icons.person),
+                                    ),
                                   ),
                                 ),
                               ),

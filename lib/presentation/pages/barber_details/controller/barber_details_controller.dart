@@ -19,6 +19,9 @@ class BarberDetailsController extends GetxController {
   final location = ''.obs;
   final categoryId = 0.obs;
 
+  // UI states
+  final isScrolled = false.obs; // Track if the AppBar is scrolled
+
   final services = <Map<String, dynamic>>[].obs;
   final gallery = <String>[].obs;
   final reviews = <Map<String, dynamic>>[].obs;
@@ -37,8 +40,12 @@ class BarberDetailsController extends GetxController {
     super.onInit();
     AppLogger.debug('Initializing BarberDetailsController');
 
-    // Get barber ID from parameters
+    // Get barber ID and pre-setup the ID immediately for Hero animation
     final barberId = Get.arguments?['barber_id'] ?? '';
+    if (barberId != null && barberId != '') {
+      // Set ID immediately for Hero animation
+      id.value = int.tryParse(barberId.toString()) ?? 0;
+    }
 
     loadBarberDetails(barberId);
   }
@@ -79,6 +86,13 @@ class BarberDetailsController extends GetxController {
 
         AppLogger.info(
             'Barber details loaded successfully: ${barberName.value}');
+
+        // Load other data after main details are set
+        Future.microtask(() {
+          loadBarberServices();
+          loadBarberGallery();
+          loadBarberReviews();
+        });
       } else {
         throw Exception(
             'Failed to load barber details: ${response.statusCode}');
@@ -87,13 +101,11 @@ class BarberDetailsController extends GetxController {
       error.value = 'Error loading barber details: $e';
       AppLogger.error('Error loading barber details: $e');
     } finally {
-      isLoading.value = false;
+      // Small delay to make sure image is loaded before removing loading state
+      Future.delayed(const Duration(milliseconds: 300), () {
+        isLoading.value = false;
+      });
     }
-
-    // Load other data after main details
-    loadBarberServices();
-    loadBarberGallery();
-    loadBarberReviews();
   }
 
   Future<void> loadBarberServices() async {
