@@ -12,8 +12,8 @@ import '../pages/splash/views/splash_page.dart';
 import '../pages/home/views/home_view.dart';
 import '../pages/splash/bindings/splash_binding.dart';
 import '../pages/home/bindings/home_binding.dart';
-import '../pages/profile_details/view/profile_details_view.dart';
-import '../pages/profile_details/binding/profile_details_binding.dart';
+import '../pages/barber_details/views/barber_details_view.dart';
+import '../pages/barber_details/bindings/barber_details_binding.dart';
 
 class AppPages {
   static final routes = [
@@ -48,9 +48,9 @@ class AppPages {
       binding: BookingBinding(),
     ),
     GetPage(
-      name: AppRoutes.profileDetails,
-      page: () => const ProfileDetailsView(),
-      binding: ProfileDetailsBinding(),
+      name: AppRoutes.barberDetails,
+      page: () => const BarberDetailsView(),
+      binding: BarberDetailsBinding(),
     ),
   ];
 }

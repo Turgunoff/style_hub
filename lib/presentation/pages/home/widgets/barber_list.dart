@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:looksy/presentation/pages/home/controller/home_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../../../presentation/routes/app_routes.dart';
 
 class BarberList extends StatelessWidget {
   final HomeController controller;
@@ -66,7 +67,8 @@ class BarberList extends StatelessWidget {
                     return GestureDetector(
                       onTap: () {
                         // Navigate to barber profile
-                        Get.toNamed('/barber-profile/${barber.id}');
+                        Get.toNamed(AppRoutes.barberDetails,
+                            arguments: {'barber_id': barber.id});
                       },
                       child: Card(
                         margin: const EdgeInsets.only(bottom: 16),
