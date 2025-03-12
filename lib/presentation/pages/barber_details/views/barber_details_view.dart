@@ -113,7 +113,7 @@ class BarberDetailsView extends GetView<BarberDetailsController> {
             child: Text(
               controller.barberName.value,
               style: const TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -123,7 +123,6 @@ class BarberDetailsView extends GetView<BarberDetailsController> {
       stretch: true,
       flexibleSpace: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          // Update scroll state for title animation
           WidgetsBinding.instance.addPostFrameCallback((_) {
             // When space bar is smaller than 80% of full size, consider it scrolled
             controller.isScrolled.value =
