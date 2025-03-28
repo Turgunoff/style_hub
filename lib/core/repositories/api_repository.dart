@@ -1,68 +1,85 @@
+import 'package:dio/dio.dart';
 import '../config/api_config.dart';
-import '../network/api_client.dart';
 import '../data/models.dart';
 import '../utils/logger.dart';
+import 'base_repository.dart';
 
 /// API repository
 ///
 /// Bu klass API so'rovlarini amalga oshirish va ma'lumotlarni modelga o'girish uchun ishlatiladi.
-class ApiRepository {
-  final ApiClient _apiClient = ApiClient();
-
-  /// Singleton pattern
-  static final ApiRepository _instance = ApiRepository._internal();
-  factory ApiRepository() => _instance;
-
-  ApiRepository._internal();
-
+class ApiRepository extends BaseRepository {
   /// Kategoriyalarni olish
   Future<List<CategoryModel>> getCategories() async {
     try {
-      final response = await _apiClient.get(ApiConfig.categoriesEndpoint);
-      final List<dynamic> data = response;
-      return data.map((json) => CategoryModel.fromJson(json)).toList();
-    } catch (e) {
-      AppLogger.error('Kategoriyalarni yuklashda xatolik: $e');
-      throw Exception('Kategoriyalarni yuklashda xatolik: $e');
+      final response = await dioClient.get(ApiConfig.categoriesEndpoint);
+      return parseResponse(
+        response,
+        (data) =>
+            (data as List).map((json) => CategoryModel.fromJson(json)).toList(),
+      );
+    } on DioException catch (e) {
+      handleError(e);
+      rethrow;
     }
   }
 
   /// Barberlarni olish
   Future<List<BarberModel>> getBarbers() async {
     try {
-      final response = await _apiClient.get(ApiConfig.barbersEndpoint);
-      final List<dynamic> data = response;
-      return data.map((json) => BarberModel.fromJson(json)).toList();
-    } catch (e) {
-      AppLogger.error('Barberlarni yuklashda xatolik: $e');
-      throw Exception('Barberlarni yuklashda xatolik: $e');
+      final response = await dioClient.get(ApiConfig.barbersEndpoint);
+      return parseResponse(
+        response,
+        (data) =>
+            (data as List).map((json) => BarberModel.fromJson(json)).toList(),
+      );
+    } on DioException catch (e) {
+      handleError(e);
+      rethrow;
     }
   }
 
   /// Bannerlarni olish
   Future<List<BannerModel>> getBanners() async {
     try {
-      final response = await _apiClient.get(ApiConfig.bannersEndpoint);
-      final List<dynamic> data = response;
-      return data.map((json) => BannerModel.fromJson(json)).toList();
-    } catch (e) {
-      AppLogger.error('Bannerlarni yuklashda xatolik: $e');
-      throw Exception('Bannerlarni yuklashda xatolik: $e');
+      final response = await dioClient.get(ApiConfig.bannersEndpoint);
+      return parseResponse(
+        response,
+        (data) =>
+            (data as List).map((json) => BannerModel.fromJson(json)).toList(),
+      );
+    } on DioException catch (e) {
+      handleError(e);
+      rethrow;
     }
   }
 
   /// Kategoriya bo'yicha barberlarni olish
   Future<List<BarberModel>> getBarbersByCategory(int categoryId) async {
     try {
-      final response = await _apiClient.get(
+      final response = await dioClient.get(
         ApiConfig.barbersEndpoint,
-        queryParams: {'category_id': categoryId},
+        queryParameters: {'category_id': categoryId},
       );
-      final List<dynamic> data = response;
-      return data.map((json) => BarberModel.fromJson(json)).toList();
-    } catch (e) {
-      AppLogger.error('Barberlarni yuklashda xatolik: $e');
-      throw Exception('Barberlarni yuklashda xatolik: $e');
+      return parseResponse(
+        response,
+        (data) =>
+            (data as List).map((json) => BarberModel.fromJson(json)).toList(),
+      );
+    } on DioException catch (e) {
+      handleError(e);
+      rethrow;
+    }
+  }
+
+  /// Barber ma'lumotlarini olish
+  Future<BarberModel> getBarberDetails(int barberId) async {
+    try {
+      final response =
+          await dioClient.get('${ApiConfig.barbersEndpoint}$barberId');
+      return parseResponse(response, (data) => BarberModel.fromJson(data));
+    } on DioException catch (e) {
+      handleError(e);
+      rethrow;
     }
   }
 }

@@ -5,7 +5,13 @@ import '../../../../../core/data/models.dart';
 import '../../../../../core/repositories/api_repository.dart';
 import '../../../../../core/utils/logger.dart';
 
+/// Asosiy sahifa uchun controller
+///
+/// Bu controller asosiy sahifadagi barcha ma'lumotlarni yuklaydi va
+/// boshqaradi. Kategoriyalar, barberlar va bannerlar bilan ishlaydi.
 class HomeController extends GetxController {
+  final ApiRepository _apiRepository = ApiRepository();
+
   // ===== ASOSIY O'ZGARUVCHILAR =====
 
   // Kategoriyalar
@@ -39,8 +45,7 @@ class HomeController extends GetxController {
   final hasMoreItems = true.obs;
   final isLoadingMore = false.obs;
 
-  // API va loading
-  final ApiRepository _apiRepository = ApiRepository();
+  // Loading states
   final isLoading = false.obs;
   final isCategoriesLoading = false.obs;
   final isBarbersLoading = false.obs;
@@ -444,7 +449,7 @@ class HomeController extends GetxController {
       AppLogger.info('Banners loaded successfully: ${banners.length} items');
     } catch (e) {
       error.value = 'Bannerlarni yuklashda xatolik: $e';
-      print('Bannerlarni yuklashda xatolik: $e');
+      AppLogger.error('Bannerlarni yuklashda xatolik: $e');
     } finally {
       isLoading.value = false;
     }

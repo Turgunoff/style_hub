@@ -1,10 +1,14 @@
 import 'package:get/get.dart';
-import 'package:dio/dio.dart';
 import '../../../../core/utils/logger.dart';
-import '../../../../core/config/env_config.dart';
+import '../../../../core/repositories/api_repository.dart';
+import '../../../../core/data/models/barber_model.dart';
 
+/// Barber tafsilotlari sahifasi uchun controller
+///
+/// Bu controller barber haqidagi barcha ma'lumotlarni yuklaydi va
+/// ko'rsatish uchun boshqaradi.
 class BarberDetailsController extends GetxController {
-  final Dio _dio = Dio();
+  final ApiRepository _apiRepository = ApiRepository();
 
   // Barber data
   final id = 0.obs;
@@ -43,69 +47,43 @@ class BarberDetailsController extends GetxController {
     // Get barber ID and pre-setup the ID immediately for Hero animation
     final barberId = Get.arguments?['barber_id'] ?? '';
     if (barberId != null && barberId != '') {
-      // Set ID immediately for Hero animation
       id.value = int.tryParse(barberId.toString()) ?? 0;
     }
 
-    loadBarberDetails(barberId);
+    loadBarberDetails(id.value);
   }
 
   void changeTabIndex(int index) {
     selectedTabIndex.value = index;
   }
 
-  Future<void> loadBarberDetails(dynamic barberId) async {
+  Future<void> loadBarberDetails(int barberId) async {
     try {
       AppLogger.debug('Loading barber details for ID: $barberId');
       isLoading.value = true;
       error.value = '';
 
-      // API call
-      final response =
-          await _dio.get('${EnvConfig.apiBaseUrl}/barbers/$barberId');
-      AppLogger.debug('Barber API response: ${response.statusCode}');
+      final barber = await _apiRepository.getBarberDetails(barberId);
+      _updateBarberData(barber);
 
-      if (response.statusCode == 200) {
-        final data = response.data;
-
-        // Set barber data
-        id.value = data['id'] ?? 0;
-        barberName.value = data['full_name'] ?? '';
-        barberImage.value = data['image_url'] ?? '';
-        phone.value = data['phone'] ?? '';
-        email.value = data['email'] ?? '';
-        bio.value = data['bio'] ?? '';
-        experience.value = data['experience'] ?? 0;
-        rating.value =
-            data['rating'] != null ? (data['rating'] as num).toDouble() : 0.0;
-        categoryId.value = data['category_id'] ?? 0;
-
-        // For now, use static values for these
-        reviewCount.value = 128;
-        location.value = 'Tashkent, Uzbekistan';
-
-        AppLogger.info(
-            'Barber details loaded successfully: ${barberName.value}');
-
-        // Load other data after main details are set
-        Future.microtask(() {
-          loadBarberServices();
-          loadBarberGallery();
-          loadBarberReviews();
-        });
-      } else {
-        throw Exception(
-            'Failed to load barber details: ${response.statusCode}');
-      }
+      AppLogger.info('Barber details loaded successfully');
     } catch (e) {
-      error.value = 'Error loading barber details: $e';
       AppLogger.error('Error loading barber details: $e');
+      error.value = 'Barber ma\'lumotlarini yuklashda xatolik yuz berdi';
     } finally {
-      // Small delay to make sure image is loaded before removing loading state
-      Future.delayed(const Duration(milliseconds: 300), () {
-        isLoading.value = false;
-      });
+      isLoading.value = false;
     }
+  }
+
+  void _updateBarberData(BarberModel barber) {
+    barberName.value = barber.fullName;
+    barberImage.value = barber.imageUrl;
+    phone.value = barber.phone;
+    email.value = barber.email;
+    bio.value = barber.bio;
+    experience.value = barber.experience;
+    rating.value = barber.rating;
+    categoryId.value = barber.categoryId;
   }
 
   Future<void> loadBarberServices() async {
