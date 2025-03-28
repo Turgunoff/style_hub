@@ -94,18 +94,17 @@ class ProfileController extends GetxController {
       }
 
       // Foydalanuvchi ismini yangilash
-      userName.value = userData['full_name'] ?? '';
+      userName.value = userData.fullName ?? '';
       AppLogger.debug('Updated userName: ${userName.value}');
 
       // Foydalanuvchi emailini yangilash
-      userEmail.value = userData['email'] ?? '';
+      userEmail.value = userData.email ?? '';
       AppLogger.debug('Updated userEmail: ${userEmail.value}');
 
       // Foydalanuvchi avatarini yangilash
-      if (userData['avatar'] != null &&
-          userData['avatar'].toString().isNotEmpty) {
+      if (userData.avatar != null && userData.avatar!.isNotEmpty) {
         // API dan kelgan avatarni o'rnatish
-        userImage.value = userData['avatar'];
+        userImage.value = userData.avatar!;
         AppLogger.debug('Set avatar image: ${userImage.value}');
       } else {
         // Avatar bo'lmasa, UI Avatars orqali generatsiya qilish
