@@ -9,7 +9,7 @@ import 'base_repository.dart';
 /// barcha so'rovlarni boshqaradi.
 class AuthRepository extends BaseRepository {
   /// Tizimga kirish
-  Future<UserModel> login(String email, String password) async {
+  Future<(UserModel, String)> login(String email, String password) async {
     try {
       final response = await dioClient.post(
         '/auth/token',
@@ -17,10 +17,27 @@ class AuthRepository extends BaseRepository {
           'username': email,
           'password': password,
         },
+        options: Options(
+          validateStatus: (status) => status! < 500,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        ),
       );
 
-      return parseResponse(
-          response, (data) => UserModel.fromJson(data['client']));
+      if (response.statusCode == 422) {
+        throw Exception('Email yoki parol noto\'g\'ri');
+      }
+
+      final user =
+          parseResponse(response, (data) => UserModel.fromJson(data['client']));
+      final token = response.data['access_token'] as String;
+
+      if (token == null) {
+        throw Exception('Token not found in response');
+      }
+
+      return (user, token);
     } on DioException catch (e) {
       handleError(e);
       rethrow;

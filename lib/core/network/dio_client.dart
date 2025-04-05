@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../config/env_config.dart';
 import '../utils/logger.dart';
 
@@ -14,6 +15,7 @@ class DioClient {
   static DioClient? _instance;
   late Dio _dio;
   late CacheOptions _cacheOptions;
+  final _storage = const FlutterSecureStorage();
 
   /// Singleton pattern orqali instance olish
   static DioClient get instance {
@@ -25,6 +27,7 @@ class DioClient {
   DioClient._internal() {
     _initDio();
     _initCache();
+    _addInterceptors();
   }
 
   /// Dio-ni ishga tushirish
@@ -46,12 +49,20 @@ class DioClient {
     if (EnvConfig.enableLogging) {
       _dio.interceptors.add(
         LogInterceptor(
-          request: true,
-          requestHeader: true,
-          requestBody: true,
-          responseHeader: true,
-          responseBody: true,
+          request: false,
+          requestHeader: false,
+          requestBody: false,
+          responseHeader: false,
+          responseBody: false,
           error: true,
+          logPrint: (obj) {
+            final message = obj.toString();
+            if (message.contains('Error')) {
+              AppLogger.error(message);
+            } else {
+              AppLogger.debug(message);
+            }
+          },
         ),
       );
     }
@@ -77,6 +88,19 @@ class DioClient {
     );
 
     _dio.interceptors.add(DioCacheInterceptor(options: _cacheOptions));
+  }
+
+  /// Auth interceptor
+  void _addInterceptors() {
+    _dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        final token = await _storage.read(key: 'auth_token');
+        if (token != null) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
+        return handler.next(options);
+      },
+    ));
   }
 
   /// GET so'rovi yuborish

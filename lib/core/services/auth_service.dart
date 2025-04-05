@@ -6,6 +6,7 @@ import '../utils/logger.dart';
 import '../config/env_config.dart';
 import '../repositories/auth_repository.dart';
 import '../data/models/user_model.dart';
+import 'package:dio/dio.dart';
 
 /// Autentifikatsiya xizmati
 ///
@@ -27,7 +28,7 @@ class AuthService extends GetxService {
   final isOnboardingCompleted = false.obs;
   final currentUser = Rxn<UserModel>();
 
-  // late Dio _dio;
+  late Dio dioClient;
 
   @override
   Future<void> onInit() async {
@@ -39,7 +40,7 @@ class AuthService extends GetxService {
     isAuthenticated.value = false;
     isLoading.value = false;
 
-    // _dio = Dio();
+    dioClient = Dio();
   }
 
   /// Auth holatini tekshirish
@@ -136,17 +137,10 @@ class AuthService extends GetxService {
     try {
       AppLogger.debug('Attempting login for user: $email');
 
-      final user = await _authRepository.login(email, password);
-      final token = await _storage.read(key: _tokenKey);
-
-      if (token != null) {
-        await saveUserData(token: token, user: user);
-        AppLogger.info('User logged in successfully');
-        return (true, 'Muvaffaqiyatli tizimga kirdingiz!');
-      }
-
-      AppLogger.error('Token missing after login');
-      return (false, 'Tizimga kirishda xatolik yuz berdi');
+      final (user, token) = await _authRepository.login(email, password);
+      await saveUserData(token: token, user: user);
+      AppLogger.info('User logged in successfully');
+      return (true, 'Muvaffaqiyatli tizimga kirdingiz!');
     } catch (e) {
       AppLogger.error('Login error: $e');
       return (false, e.toString());
